@@ -18,13 +18,6 @@ Ou, se preferir, configurar um **Gradle** ou **Maven** para compilar. Mas, para 
 
 ---
 
-## 7. Próximos Passos / Dicas
 
-- **Persistência de dados**: Por enquanto, tudo está em memória (List). Se quiser evoluir, adicione salvamento em arquivo `.csv` ou banco de dados.  
-- **Match**: O enunciado fala sobre filtrar candidatos pelas competências requisitadas. Você pode criar um método que verifique o “match” das skills.  
-- **Validação**: Talvez queira validar campos (por exemplo, CPF, CNPJ, campos vazios).  
-- **Refatoração**: Com o tempo, extrair a lógica de menu para uma classe separada, isolar cadastro/listagem em “services” etc.
-
----
 
 
