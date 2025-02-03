@@ -18,6 +18,15 @@ Ou, se preferir, configurar um **Gradle** ou **Maven** para compilar. Mas, para 
 
 ---
 
-
+## Nova Feature: Sistema de Curtidas
+- Agora o projeto inclui uma classe `Curtida` que relaciona:
+  - O Candidato e a Vaga que ele curtiu.
+  - Uma Empresa que também curtiu esse Candidato.
+- Quando ambas as partes curtem (Candidato a Vaga, Empresa ao Candidato), ocorre o **Match**.
+- Para testar:
+  1. Rode `groovy LinketinderApp.groovy`.
+  2. Escolha a opção "4) Candidato Curte Vaga".
+  3. Escolha a opção "5) Empresa Curte Candidato".
+  4. Vá em "6) Exibir Curtidas" para ver o status de cada curtida e verificar se há match.
 
 

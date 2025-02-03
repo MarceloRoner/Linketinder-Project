@@ -1,7 +1,12 @@
+import java.util.Scanner
+
 class LinketinderApp {
 
     static List<Candidato> candidatos = []
     static List<Empresa> empresas = []
+
+    static List<Vaga> vagas = []
+    static List<Curtida> curtidas = []
 
     static void main(String[] args) {
         println "Projeto Linketinder - Desenvolvido por Marcelo (exemplo)"
@@ -18,6 +23,11 @@ class LinketinderApp {
         empresas << new Empresa("Digital Vision", "jobs@digitalvision.com", "22.222.222/0001-22", "Brasil", "BA", "40000-444", "Marketing Digital", ["Design", "SEO", "HTML/CSS"])
         empresas << new Empresa("SoftHouse", "hr@softhouse.com", "33.333.333/0001-33", "Brasil", "RS", "90000-555", "Desenvolvimento de Sistemas", ["Java", "Spring", "Arquitetura de Software"])
 
+        def arrozGostoso = empresas[0]  // "Arroz-Gostoso"
+        def imperioBoliche = empresas[1] // "Império do Boliche"
+        vagas << new Vaga(1, "Desenvolvedor Java", arrozGostoso, ["Java", "Groovy"])
+        vagas << new Vaga(2, "Atendente de Pista", imperioBoliche, ["Atendimento", "Marketing"])
+
         exibirMenu()
     }
 
@@ -29,7 +39,11 @@ class LinketinderApp {
             println "2) Listar todas as empresas"
             println "3) Cadastrar novo candidato (opcional)"
             println "4) Cadastrar nova empresa (opcional)"
-            println "5) Sair"
+            println "5) Listar vagas"
+            println "6) Candidato curte vaga"
+            println "7) Empresa curte candidato"
+            println "8) Exibir curtidas"
+            println "9) Sair"
             print "Escolha uma opção: "
 
             String opcao = scanner.nextLine()
@@ -48,6 +62,18 @@ class LinketinderApp {
                     cadastrarEmpresa(scanner)
                     break
                 case "5":
+                    listarVagas()
+                    break
+                case "6":
+                    candidatoCurteVaga(scanner)
+                    break
+                case "7":
+                    empresaCurteCandidato(scanner)
+                    break
+                case "8":
+                    exibirCurtidas()
+                    break
+                case "9":
                     println "Saindo do sistema..."
                     System.exit(0)
                     break
@@ -56,6 +82,7 @@ class LinketinderApp {
             }
         }
     }
+
 
     static void listarCandidatos() {
         println "\n--- LISTA DE CANDIDATOS ---"
@@ -66,6 +93,21 @@ class LinketinderApp {
         println "\n--- LISTA DE EMPRESAS ---"
         empresas.each { println it }
     }
+
+    static void listarVagas() {
+        println "\n--- LISTA DE VAGAS ---"
+        vagas.each { println it }
+    }
+
+    static void exibirCurtidas() {
+        println "\n--- LISTA DE CURTIDAS ---"
+        if (curtidas.isEmpty()) {
+            println "Nenhuma curtida registrada ainda."
+        } else {
+            curtidas.each { println it }
+        }
+    }
+
 
     static void cadastrarCandidato(Scanner scanner) {
         println "\n--- CADASTRO DE CANDIDATO ---"
@@ -133,5 +175,80 @@ class LinketinderApp {
         empresas << nova
 
         println "Empresa cadastrada com sucesso!"
+    }
+
+
+    static void candidatoCurteVaga(Scanner scanner) {
+        println "\nEscolha um candidato (pelo índice):"
+        candidatos.eachWithIndex { cand, idx ->
+            println "[${idx}] ${cand.nome}"
+        }
+        int candIdx = scanner.nextLine().toInteger()
+        Candidato candidato = candidatos[candIdx]
+
+        println "\nEscolha uma vaga (pelo índice):"
+        vagas.eachWithIndex { vg, idx ->
+            println "[${idx}] ${vg.titulo} (Empresa: ${vg.empresa.nome})"
+        }
+        int vagaIdx = scanner.nextLine().toInteger()
+        Vaga vaga = vagas[vagaIdx]
+
+        Curtida curtidaExistente = curtidas.find { it.candidato == candidato && it.vaga == vaga }
+        if (!curtidaExistente) {
+            Curtida novaCurtida = new Curtida(candidato, vaga)
+            curtidas << novaCurtida
+            println "Candidato ${candidato.nome} curtiu a vaga '${vaga.titulo}'."
+        } else {
+            curtidaExistente.candidatoCurtiu = true
+            println "Candidato ${candidato.nome} (re)curtiu a vaga '${vaga.titulo}'."
+            if (curtidaExistente.isMatch()) {
+                println ">>> MATCH REALIZADO! <<<"
+            }
+        }
+    }
+
+    static void empresaCurteCandidato(Scanner scanner) {
+        println "\nEscolha uma empresa (pelo índice):"
+        empresas.eachWithIndex { emp, idx ->
+            println "[${idx}] ${emp.nome}"
+        }
+        int empIdx = scanner.nextLine().toInteger()
+        Empresa empresa = empresas[empIdx]
+
+        List<Vaga> vagasDaEmpresa = vagas.findAll { it.empresa == empresa }
+        if (vagasDaEmpresa.isEmpty()) {
+            println "Essa empresa não possui vagas cadastradas."
+            return
+        }
+
+        println "\nEscolha uma vaga que pertence a ${empresa.nome} (pelo índice):"
+        vagasDaEmpresa.eachWithIndex { vg, idx ->
+            println "[${idx}] ${vg.titulo} (ID: ${vg.id})"
+        }
+        int vagaIdx = scanner.nextLine().toInteger()
+        Vaga vagaEscolhida = vagasDaEmpresa[vagaIdx]
+
+        println "\nEscolha um candidato para curtir (pelo índice):"
+        candidatos.eachWithIndex { cand, idx ->
+            println "[${idx}] ${cand.nome}"
+        }
+        int candIdx = scanner.nextLine().toInteger()
+        Candidato candidato = candidatos[candIdx]
+
+        Curtida curtidaExistente = curtidas.find { it.candidato == candidato && it.vaga == vagaEscolhida }
+        if (!curtidaExistente) {
+            Curtida novaCurtida = new Curtida(candidato, vagaEscolhida)
+            novaCurtida.empresaCurtiu = true
+            curtidas << novaCurtida
+
+            println "Empresa ${empresa.nome} curtiu o candidato ${candidato.nome} na vaga '${vagaEscolhida.titulo}'."
+        } else {
+            curtidaExistente.empresaCurtiu = true
+            println "Empresa ${empresa.nome} curtiu o candidato ${candidato.nome} (vaga: '${vagaEscolhida.titulo}')."
+
+            if (curtidaExistente.isMatch()) {
+                println ">>> MATCH REALIZADO! <<<"
+            }
+        }
     }
 }
