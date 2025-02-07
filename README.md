@@ -1,7 +1,9 @@
-# Linketinder Project
+# 🏆 Linketinder Project 
 
-## Descrição
-Projeto desenvolvido em Groovy para o ZG-HERO (K1-T4). Trata-se de um MVP para simular um sistema de recrutamento estilo “Linketinder”.
+Projeto desenvolvido em **Groovy** para o **ZG-HERO (K1-T4)**. Trata-se de um **MVP para simular um sistema de recrutamento estilo "LinkedIn + Tinder."**.
+
+![GitHub repo size](https://img.shields.io/github/repo-size/MarceloRoner/Linketinder-Project)
+![GitHub last commit](https://img.shields.io/github/last-commit/MarceloRoner/Linketinder-Project)
 
 ## Como Executar
 1. Certifique-se de ter o [Groovy](https://groovy-lang.org/) instalado.
@@ -29,6 +31,7 @@ Ou, se preferir, configurar um **Gradle** ou **Maven** para compilar. Mas, para 
   3. Escolha a opção "5) Empresa Curte Candidato".
   4. Vá em "6) Exibir Curtidas" para ver o status de cada curtida e verificar se há match.
 
+## Nova Feature: Testes unitários
   Agora o projeto conta com testes unitários escritos em Groovy, usando o framework Spock. Para rodar:
 
 1. Instale Gradle (ou use o wrapper, caso tenha configurado).
