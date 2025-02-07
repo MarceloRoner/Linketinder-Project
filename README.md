@@ -29,4 +29,12 @@ Ou, se preferir, configurar um **Gradle** ou **Maven** para compilar. Mas, para 
   3. Escolha a opção "5) Empresa Curte Candidato".
   4. Vá em "6) Exibir Curtidas" para ver o status de cada curtida e verificar se há match.
 
+  Agora o projeto conta com testes unitários escritos em Groovy, usando o framework Spock. Para rodar:
+
+1. Instale Gradle (ou use o wrapper, caso tenha configurado).
+2. Na raiz do projeto, rode `gradle test`.
+3. Verifique o relatório em `build/reports/tests/test/index.html`.
+
+Caso prefira rodar manualmente, é possível usar `groovy testRunner.groovy` (ou algo que você tenha configurado).
+
 
