@@ -1,0 +1,29 @@
+plugins {
+    id 'groovy'
+}
+
+group = 'org.example'
+version = '1.0'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // Groovy 4.x
+    // Pode usar 'org.apache.groovy:groovy' OU 'org.codehaus.groovy:groovy-all'
+    // Aqui uso 'org.apache.groovy:groovy:4.0.14'
+    implementation 'org.apache.groovy:groovy:4.0.14'
+
+    // Spock compatível com Groovy 4.x
+    // (2.3-groovy-4.0 é uma das versões recentes)
+    testImplementation 'org.spockframework:spock-core:2.3-groovy-4.0'
+
+    // JUnit (necessário para rodar o Spock 2.x)
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+}
+
+test {
+    useJUnitPlatform()
+}

@@ -99,6 +99,13 @@ class LinketinderApp {
         vagas.each { println it }
     }
 
+    static void adicionarCandidato(Candidato candidato) {
+        candidatos << candidato
+    }
+
+    static void adicionarEmpresa(Empresa empresa) {
+        empresas << empresa
+    }
     static void exibirCurtidas() {
         println "\n--- LISTA DE CURTIDAS ---"
         if (curtidas.isEmpty()) {
