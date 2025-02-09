@@ -1,0 +1,32 @@
+# 🔹 Ignorar diretórios de build e compilação
+/build/
+/out/
+/target/
+/bin/
+
+# 🔹 Ignorar cache do Gradle
+.gradle/
+/gradle/wrapper/
+
+# 🔹 Ignorar arquivos do IntelliJ IDEA
+.idea/
+*.iml
+
+# 🔹 Ignorar logs e arquivos temporários
+*.log
+*.tmp
+*.swp
+
+# 🔹 Ignorar arquivos do sistema operacional
+.DS_Store
+Thumbs.db
+
+# 🔹 Ignorar relatórios de testes e artefatos temporários
+/reports/
+/test-results/
+/coverage/
+
+# 🔹 Ignorar arquivos do Gradle Wrapper que podem ser regenerados
+gradlew
+gradlew.bat
+
