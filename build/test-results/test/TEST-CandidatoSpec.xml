@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="CandidatoSpec" tests="2" skipped="0" failures="0" errors="0" timestamp="2025-02-07T02:44:06" hostname="marcelo-roner-A520M-K-V2" time="0.041">
-  <properties/>
-  <testcase name="deve criar um candidato corretamente" classname="CandidatoSpec" time="0.036"/>
-  <testcase name="deve alterar nome e email através dos setters" classname="CandidatoSpec" time="0.004"/>
-  <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>
