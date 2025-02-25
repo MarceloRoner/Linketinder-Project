@@ -40,4 +40,26 @@ Ou, se preferir, configurar um **Gradle** ou **Maven** para compilar. Mas, para 
 
 Caso prefira rodar manualmente, é possível usar `groovy testRunner.groovy` (ou algo que você tenha configurado).
 
+## Executando o Frontend (TypeScript)
+
+1. Entre na pasta `frontend/`.
+2. Instale as dependências:
+   ```bash
+   npm install
+Compile os arquivos TypeScript:
+npm run build
+Isso gera a pasta dist/ (ignorada pelo Git).
+Se quiser rodar um servidor local com reload automático:
+npm start
+Isso abrirá no navegador (via lite-server).
+As páginas HTML ficam em frontend/html/. Exemplos:
+cadastro-candidato.html
+cadastro-empresa.html
+cadastro-vaga.html
+perfil-candidato.html
+perfil-empresa.html 
+Cada página carrega o .js compilado de dist/.
+Observe que, neste momento, não há integração real com o backend Groovy — estamos usando localStorage. No KIT 2 faremos a comunicação frontend/backend.
+
+
 
