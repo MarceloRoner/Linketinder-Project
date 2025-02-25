@@ -1,12 +1,12 @@
-# 🔹 Ignorar diretórios de build e compilação
-/build/
-/out/
-/target/
-/bin/
+# 🔹 Ignorar diretórios de build e compilação (Backend)
+build/
+out/
+target/
+bin/
 
 # 🔹 Ignorar cache do Gradle
 .gradle/
-/gradle/wrapper/
+gradle/wrapper/
 
 # 🔹 Ignorar arquivos do IntelliJ IDEA
 .idea/
@@ -22,11 +22,15 @@
 Thumbs.db
 
 # 🔹 Ignorar relatórios de testes e artefatos temporários
-/reports/
-/test-results/
-/coverage/
+reports/
+test-results/
+coverage/
 
 # 🔹 Ignorar arquivos do Gradle Wrapper que podem ser regenerados
 gradlew
 gradlew.bat
+
+# 🔹 Ignorar dependências e build do frontend
+node_modules/
+dist/
 
