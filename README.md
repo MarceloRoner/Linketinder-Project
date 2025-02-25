@@ -40,26 +40,48 @@ Ou, se preferir, configurar um **Gradle** ou **Maven** para compilar. Mas, para 
 
 Caso prefira rodar manualmente, é possível usar `groovy testRunner.groovy` (ou algo que você tenha configurado).
 
-## Executando o Frontend (TypeScript)
+🚀 Executando o Frontend (TypeScript)
 
-1. Entre na pasta `frontend/`.
-2. Instale as dependências:
-   ```bash
-   npm install
-Compile os arquivos TypeScript:
+1️⃣ Preparação do ambiente
+Antes de iniciar o projeto, certifique-se de que possui o Node.js instalado.
+
+2️⃣ Instalando as dependências
+Abra o terminal e, dentro da pasta do frontend, execute:
+
+
+cd frontend
+npm install
+Isso instalará todas as dependências necessárias para rodar o projeto.
+
+3️⃣ Compilando o TypeScript
+Para compilar os arquivos TypeScript e gerar o código JavaScript na pasta dist/, execute:
+
+
 npm run build
-Isso gera a pasta dist/ (ignorada pelo Git).
-Se quiser rodar um servidor local com reload automático:
+⚠️ A pasta dist/ é ignorada pelo Git, pois contém apenas os arquivos gerados automaticamente.
+
+4️⃣ Rodando o servidor local
+Se quiser visualizar o projeto no navegador com reload automático, utilize o comando:
+
 npm start
-Isso abrirá no navegador (via lite-server).
-As páginas HTML ficam em frontend/html/. Exemplos:
-cadastro-candidato.html
-cadastro-empresa.html
-cadastro-vaga.html
-perfil-candidato.html
-perfil-empresa.html 
-Cada página carrega o .js compilado de dist/.
-Observe que, neste momento, não há integração real com o backend Groovy — estamos usando localStorage. No KIT 2 faremos a comunicação frontend/backend.
+Isso abrirá a aplicação no navegador utilizando o lite-server.
+
+5️⃣ Estrutura do Frontend
+Os arquivos HTML do projeto estão localizados na pasta:
+
+frontend/html/
+Principais páginas disponíveis:
+
+cadastro-candidato.html → Cadastro de candidatos
+cadastro-empresa.html → Cadastro de empresas
+cadastro-vaga.html → Cadastro de vagas
+perfil-candidato.html → Perfil dos candidatos
+perfil-empresa.html → Perfil das empresas
+6️⃣ Importante
+📌 Nesta etapa, o frontend ainda não está integrado ao backend em Groovy. No momento, os dados são armazenados localmente no navegador utilizando localStorage.
+📌 A comunicação real com o backend será implementada no KIT 2.
+
+
 
 
 
