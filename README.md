@@ -40,7 +40,7 @@ Ou, se preferir, configurar um **Gradle** ou **Maven** para compilar. Mas, para 
 
 Caso prefira rodar manualmente, é possível usar `groovy testRunner.groovy` (ou algo que você tenha configurado).
 
-##Executando o Frontend (TypeScript)
+## Executando o Frontend (TypeScript)
 
 1️⃣ Preparação do ambiente
 Antes de iniciar o projeto, certifique-se de que possui o Node.js instalado.
