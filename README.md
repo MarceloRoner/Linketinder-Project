@@ -73,12 +73,19 @@ frontend/html/
 Principais páginas disponíveis:
 
 cadastro-candidato.html → Cadastro de candidatos
+
 cadastro-empresa.html → Cadastro de empresas
+
 cadastro-vaga.html → Cadastro de vagas
+
 perfil-candidato.html → Perfil dos candidatos
+
 perfil-empresa.html → Perfil das empresas
+
 6️⃣ Importante
+
 📌 Nesta etapa, o frontend ainda não está integrado ao backend em Groovy. No momento, os dados são armazenados localmente no navegador utilizando localStorage.
+
 📌 A comunicação real com o backend será implementada no KIT 2.
 
 
