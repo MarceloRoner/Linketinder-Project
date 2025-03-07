@@ -1,10 +1,8 @@
 {
   "name": "frontend",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
   "scripts": {
-    "build": "tsc",
+   "build": "tsc",
     "watch": "tsc --watch",
     "start": "lite-server",
     "test": "echo \"Error: no test specified\" && exit 1"

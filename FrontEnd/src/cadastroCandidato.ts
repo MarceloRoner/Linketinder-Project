@@ -1,6 +1,6 @@
 import { Candidato } from './model';
 import { getCandidatos, saveCandidatos } from './storageService.js';
-
+import { validarNome, validarEmail, validarCPF, validarCEP, validarCompetencias } from './validations.js';
 window.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('form-candidato') as HTMLFormElement;
 
@@ -19,13 +19,32 @@ window.addEventListener('DOMContentLoaded', () => {
     const idade = idadeStr ? parseInt(idadeStr, 10) : 0;
     const competencias = competenciasStr ? competenciasStr.split(',').map(c => c.trim()) : [];
 
-    // Validar básicos
-    if (!nome) {
-      alert("Nome é obrigatório!");
+    if (!validarNome(nome)) {
+      alert("Nome inválido! (mínimo 3 letras, sem caracteres estranhos)");
       return;
     }
-    if (!email) {
-      alert("Email é obrigatório!");
+    // E-mail
+    if (!validarEmail(email)) {
+      alert("E-mail inválido!");
+      return;
+    }
+    // CPF
+    if (cpf && !validarCPF(cpf)) {
+      alert("CPF inválido! Use 11 dígitos (ex.: 12345678901)");
+      return;
+    }
+    // CEP
+    if (cep && !validarCEP(cep)) {
+      alert("CEP inválido! Use 99999-999 ou 99999999");
+      return;
+    }
+    // Competências
+    if (!validarCompetencias(competencias)) {
+      alert("Competências inválidas! Use somente letras, números e espaços.");
+      return;
+    }
+    if (idade < 18 || idade > 65) {
+      alert("Idade deve estar entre 18 e 65.");
       return;
     }
 

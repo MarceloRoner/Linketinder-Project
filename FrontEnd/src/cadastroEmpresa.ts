@@ -1,5 +1,12 @@
 import { Empresa } from './model';
 import { getEmpresas, saveEmpresas } from './storageService.js';
+import {
+  validarNome,
+  validarEmail,
+  validarCNPJ,
+  validarCEP,
+  validarCompetencias
+} from './validations';
 
 window.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('form-empresa') as HTMLFormElement;
@@ -20,12 +27,25 @@ window.addEventListener('DOMContentLoaded', () => {
       ? compsStr.split(',').map(c => c.trim())
       : [];
 
-    if (!nome) {
-      alert("Nome da empresa é obrigatório!");
+     // Validações
+     if (!validarNome(nome)) {
+      alert("Nome da empresa inválido! (mínimo 3 letras)");
       return;
     }
-    if (!email) {
-      alert("E-mail é obrigatório!");
+    if (!validarEmail(email)) {
+      alert("E-mail inválido!");
+      return;
+    }
+    if (cnpj && !validarCNPJ(cnpj)) {
+      alert("CNPJ inválido! (14 dígitos)");
+      return;
+    }
+    if (cep && !validarCEP(cep)) {
+      alert("CEP inválido!");
+      return;
+    }
+    if (!validarCompetencias(competenciasEsperadas)) {
+      alert("Competências inválidas (apenas letras, números e espaços).");
       return;
     }
 

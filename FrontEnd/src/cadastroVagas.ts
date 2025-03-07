@@ -1,5 +1,8 @@
 import { Vaga } from './model';
 import { getVagas, saveVagas } from './storageService.js';
+import {
+  validarCompetencias
+} from './validations';
 
 window.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('form-vaga') as HTMLFormElement;
@@ -24,6 +27,11 @@ window.addEventListener('DOMContentLoaded', () => {
     const competencias = compsStr 
       ? compsStr.split(',').map(c => c.trim()) 
       : [];
+
+      if (!validarCompetencias(competencias)) {
+        alert("As competências têm caracteres inválidos!");
+        return;
+      }
 
     // Lê as vagas existentes
     const vagas = getVagas();
