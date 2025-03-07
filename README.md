@@ -88,7 +88,48 @@ perfil-empresa.html → Perfil das empresas
 
 📌 A comunicação real com o backend será implementada no KIT 2.
 
+## Nova Feature: Validações com Regex no Frontend
+No Frontend em TypeScript, foram adicionadas funções para validar dados antes do cadastro, garantindo que o usuário não digite valores fora do padrão. Estão localizadas em validations.ts.
+Exemplo das principais validações:
 
+export function validarNome(nome: string): boolean {
+  const regex = /^[A-Za-zÀ-ÖØ-öø-ÿ\s]{3,}$/;
+  return regex.test(nome.trim());
+}
+
+export function validarEmail(email: string): boolean {
+  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return regex.test(email.trim());
+}
+
+export function validarCPF(cpf: string): boolean {
+  if (!cpf) return true;  
+  const regex = /^\d{11}$/;
+  return regex.test(cpf.trim());
+}
+
+// ... e assim por diante ...
+validarNome: Exige pelo menos 3 letras (incluindo acentos) e espaços, sem números nem símbolos.
+validarEmail: Checa um formato básico de e-mail (exemplo@dominio.com).
+validarCPF: Aceita somente 11 dígitos. Se o campo estiver vazio, não acusa erro (campo opcional).
+validarCNPJ: Verifica 14 dígitos.
+validarCEP: Permite tanto "12345678" quanto "12345-678".
+validarCompetencias: Recebe um array de strings (já separadas por vírgula no formulário) e garante que cada item só contenha letras, números, espaços e acentos.
+Caso o usuário informe valores inválidos, o sistema exibe um alert no momento do submit e não realiza o cadastro.
+
+Exemplos de uso
+No arquivo cadastroCandidato.ts, temos:
+
+if (!validarNome(nome)) {
+  alert("Nome inválido! (mínimo 3 letras, sem caracteres estranhos)");
+  return;
+}
+// ...
+if (!validarEmail(email)) {
+  alert("E-mail inválido!");
+  return;
+}
+Se qualquer validação falhar, o cadastro é interrompido e o usuário recebe um aviso. Caso tudo esteja correto, os dados são salvos no localStorage.
 
 
 
