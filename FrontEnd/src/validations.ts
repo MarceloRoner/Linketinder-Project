@@ -1,42 +1,44 @@
 export function validarNome(nome:string) : boolean {
 
-        const regex = /^[A-Za-zÀ-ÖØ-öø-ÿ\s]{3,}$/;
-        return regex.test(nome.trim());
+  const regex = /^(?!.*[\s'-]{2})[A-Za-zÀ-ÖØ-öø-ÿ]([A-Za-zÀ-ÖØ-öø-ÿ\s'-]*[A-Za-zÀ-ÖØ-öø-ÿ])?$/;
+  return regex.test(nome.trim());
 
 }
 
 export function validarEmail(email:string) : boolean {
      
-    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return regex.test(email.trim());
+  const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  return regex.test(email.trim());
 
 }
 
 export function validarCPF(cpf: string): boolean {
     if (!cpf) return true;  
-    const regex = /^\d{11}$/;
+    const regex = /^(\d{3}\.){2}\d{3}-\d{2}|\d{11}$/; // Agora aceita CPFs formatados e não formatados
     return regex.test(cpf.trim());
   }
     
   export function validarCNPJ(cnpj: string): boolean {
     if (!cnpj) return true; // Idem
-    const regex = /^\d{14}$/;
+    const regex = /^\d{2}(\.\d{3}){2}\/\d{4}-\d{2}|\d{14}$/; // Agora aceita CNPJs formatados e não formatados
     return regex.test(cnpj.trim());
   }
 
   export function validarCEP(cep: string): boolean {
     if (!cep) return true;
     const regex = /^\d{5}-?\d{3}$/;
-    return regex.test(cep.trim());
+    return regex.test(cep.trim().replace(/\s/g, '')); // Removendo espaços internos
   }
 
   export function validarCompetencias(comps: string[]): boolean {
     const regex = /^[A-Za-z0-9À-ÖØ-öø-ÿ\s]+$/;
   
-    if (!comps || comps.length === 0) {
-      return true; 
-    }
+    if (!comps || comps.length === 0) return false; // Agora exige pelo menos 1 válida
   
-    return comps.every((item) => regex.test(item.trim()));
-  }
+    return comps.every((item) => {
+        const trimmedItem = item.trim();
+        return trimmedItem.length > 0 && regex.test(trimmedItem);
+    });
+}
+
 
