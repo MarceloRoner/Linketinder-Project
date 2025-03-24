@@ -143,5 +143,18 @@ if (!validarEmail(email)) {
 
 Se qualquer validação falhar, o cadastro é interrompido e o usuário recebe um aviso. Caso tudo esteja correto, os dados são salvos no localStorage.
 
+## Banco de Dados (Projeto Introdutório)
+
+Este projeto agora inclui a modelagem e criação de um banco de dados PostgreSQL para o Linketinder.
+
+### Como usar
+1. No pgAdmin, crie um banco chamado `linketinder` (ou rode `CREATE DATABASE linketinder;` via terminal).
+2. Rode o script [`linketinder_project.sql`](./linketinder_project.sql) para criar as tabelas e inserir 5 candidatos, 5 empresas, etc.
+3. Caso queira ver a modelagem visual, acesse [`linketinder_project.png`](./linketinder_project.png).
+
+### Sobre a modelagem
+- Tabelas principais: `candidato`, `empresa`, `competencia`, `vaga`, ...
+- Tabelas pivô para relacionamento N:N: `candidato_competencia`, `vaga_competencia`, ...
+- Tabela `curtida` para armazenar o “like” entre candidato e vaga.
 
 
