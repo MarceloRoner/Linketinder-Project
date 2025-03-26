@@ -184,5 +184,5 @@ A lógica principal foi totalmente reescrita para se comunicar com o banco via `
 
 - Listagens de candidatos, empresas e vagas agora refletem os dados reais do banco
 - Cadastro de novos usuários insere dados no PostgreSQL diretamente
-- O sistema de curtidas foi mantido em memória por enquanto, mas já está integrado às entidades reai
+- O sistema de curtidas foi mantido em memória por enquanto, mas já está integrado às entidades reais
 
