@@ -157,4 +157,32 @@ Este projeto agora inclui a modelagem e criação de um banco de dados PostgreSQ
 - Tabelas pivô para relacionamento N:N: `candidato_competencia`, `vaga_competencia`, ...
 - Tabela `curtida` para armazenar o “like” entre candidato e vaga.
 
+## 🔨 Refatoração Estrutural e Conexão com Banco de Dados
+
+### 🗂️ Organização por Módulos
+
+O projeto foi totalmente reorganizado em **módulos separados**, com os arquivos distribuídos conforme sua responsabilidade:
+
+- `dao/` → Camada de acesso a dados (JDBC + SQL)
+- `domain/` → Classes de domínio como `Candidato`, `Empresa`, `Vaga`, `Pessoa`
+- `main/` → Contém a aplicação principal (`LinketinderApp`) e lógica de curtidas (`Curtida`)
+
+### 🛢️ Integração com PostgreSQL
+
+Foi implementada a camada `LinkeTinderDAO`, responsável por:
+
+- Abrir conexões com o banco de dados (`getConnection`)
+- Inserir e buscar candidatos e empresas diretamente no PostgreSQL
+- Relacionar entidades via tabelas intermediárias (ex: `candidato_competencia`)
+- Evitar duplicidade de competências com lógica de inserção/busca (`inserirOuBuscarCompetencia`)
+
+Essa abordagem substitui completamente o uso de listas fixas em memória. Agora, **todos os dados são persistidos no banco**, tornando o sistema mais realista e escalável.
+
+### 🧠 Nova Lógica no `LinketinderApp`
+
+A lógica principal foi totalmente reescrita para se comunicar com o banco via `LinkeTinderDAO`. Destaques:
+
+- Listagens de candidatos, empresas e vagas agora refletem os dados reais do banco
+- Cadastro de novos usuários insere dados no PostgreSQL diretamente
+- O sistema de curtidas foi mantido em memória por enquanto, mas já está integrado às entidades reai
 

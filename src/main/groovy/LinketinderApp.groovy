@@ -1,32 +1,23 @@
 import java.util.Scanner
+import domain.Candidato
+import domain.Empresa
+import domain.Vaga
+import dao.LinketinderDAO
 
 class LinketinderApp {
 
     static List<Candidato> candidatos = []
     static List<Empresa> empresas = []
-
     static List<Vaga> vagas = []
     static List<Curtida> curtidas = []
 
     static void main(String[] args) {
         println "Projeto Linketinder - Desenvolvido por Marcelo (exemplo)"
 
-        candidatos << new Candidato("João Silva", "joao@example.com", "123.456.789-00", 30, "SP", "01000-000", "Desenvolvedor FullStack", ["Java", "Groovy", "Angular"])
-        candidatos << new Candidato("Maria Souza", "maria@example.com", "987.654.321-00", 25, "RJ", "20000-000", "QA Engineer", ["Testes Automatizados", "Selenium", "Java"])
-        candidatos << new Candidato("Ana Paula", "ana@example.com", "111.222.333-44", 29, "MG", "30000-000", "DevOps", ["Docker", "Kubernetes", "Jenkins"])
-        candidatos << new Candidato("Carlos Oliveira", "carlos@example.com", "555.666.777-88", 35, "BA", "40000-000", "Front-end Developer", ["HTML", "CSS", "JavaScript"])
-        candidatos << new Candidato("Mariana Torres", "mariana@example.com", "999.888.777-66", 22, "RS", "90000-000", "Back-end Jr", ["Java", "Spring", "MySQL"])
-
-        empresas << new Empresa("Arroz-Gostoso", "rh@arrozgostoso.com", "12.345.678/0001-00", "Brasil", "SP", "01000-111", "Empresa do ramo alimentício", ["Java", "Groovy", "Banco de Dados"])
-        empresas << new Empresa("Império do Boliche", "contato@imperiodoboliche.com", "98.765.432/0001-00", "Brasil", "RJ", "20000-222", "Empresa de entretenimento", ["Atendimento", "Marketing"])
-        empresas << new Empresa("Tech Solutions", "careers@techsolutions.com", "11.111.111/0001-11", "Brasil", "MG", "30000-333", "Consultoria em TI", ["DevOps", "Cloud", "CI/CD"])
-        empresas << new Empresa("Digital Vision", "jobs@digitalvision.com", "22.222.222/0001-22", "Brasil", "BA", "40000-444", "Marketing Digital", ["Design", "SEO", "HTML/CSS"])
-        empresas << new Empresa("SoftHouse", "hr@softhouse.com", "33.333.333/0001-33", "Brasil", "RS", "90000-555", "Desenvolvimento de Sistemas", ["Java", "Spring", "Arquitetura de Software"])
-
-        def arrozGostoso = empresas[0]  // "Arroz-Gostoso"
-        def imperioBoliche = empresas[1] // "Império do Boliche"
-        vagas << new Vaga(1, "Desenvolvedor Java", arrozGostoso, ["Java", "Groovy"])
-        vagas << new Vaga(2, "Atendente de Pista", imperioBoliche, ["Atendimento", "Marketing"])
+        // Carrega do banco inicialmente
+        candidatos = LinketinderDAO.listarCandidatos()
+        empresas   = LinketinderDAO.listarEmpresas()
+        vagas      = LinketinderDAO.listarVagas()
 
         exibirMenu()
     }
@@ -37,13 +28,15 @@ class LinketinderApp {
             println "\n--- LINKETINDER MENU ---"
             println "1) Listar todos os candidatos"
             println "2) Listar todas as empresas"
-            println "3) Cadastrar novo candidato (opcional)"
-            println "4) Cadastrar nova empresa (opcional)"
+            println "3) Cadastrar novo candidato"
+            println "4) Cadastrar nova empresa"
             println "5) Listar vagas"
             println "6) Candidato curte vaga"
             println "7) Empresa curte candidato"
             println "8) Exibir curtidas"
             println "9) Sair"
+            println "9) Cadastrar nova vaga"
+            println "10) Sair"
             print "Escolha uma opção: "
 
             String opcao = scanner.nextLine()
@@ -73,9 +66,12 @@ class LinketinderApp {
                 case "8":
                     exibirCurtidas()
                     break
-                case "9":
+                case "10":
                     println "Saindo do sistema..."
                     System.exit(0)
+                    break
+                case "9":
+                    cadastrarVaga(scanner)
                     break
                 default:
                     println "Opção inválida. Tente novamente."
@@ -83,39 +79,33 @@ class LinketinderApp {
         }
     }
 
-
+    // -------------------------------------------------------
+    // 1) LISTAR CANDIDATOS
+    // -------------------------------------------------------
     static void listarCandidatos() {
         println "\n--- LISTA DE CANDIDATOS ---"
-        candidatos.each { println it }
-    }
-
-    static void listarEmpresas() {
-        println "\n--- LISTA DE EMPRESAS ---"
-        empresas.each { println it }
-    }
-
-    static void listarVagas() {
-        println "\n--- LISTA DE VAGAS ---"
-        vagas.each { println it }
-    }
-
-    static void adicionarCandidato(Candidato candidato) {
-        candidatos << candidato
-    }
-
-    static void adicionarEmpresa(Empresa empresa) {
-        empresas << empresa
-    }
-    static void exibirCurtidas() {
-        println "\n--- LISTA DE CURTIDAS ---"
-        if (curtidas.isEmpty()) {
-            println "Nenhuma curtida registrada ainda."
+        if (candidatos.isEmpty()) {
+            println "Não há candidatos cadastrados!"
         } else {
-            curtidas.each { println it }
+            candidatos.each { println it }
         }
     }
 
+    // -------------------------------------------------------
+    // 2) LISTAR EMPRESAS
+    // -------------------------------------------------------
+    static void listarEmpresas() {
+        println "\n--- LISTA DE EMPRESAS ---"
+        if (empresas.isEmpty()) {
+            println "Não há empresas cadastradas!"
+        } else {
+            empresas.each { println it }
+        }
+    }
 
+    // -------------------------------------------------------
+    // 3) CADASTRAR CANDIDATO
+    // -------------------------------------------------------
     static void cadastrarCandidato(Scanner scanner) {
         println "\n--- CADASTRO DE CANDIDATO ---"
 
@@ -145,11 +135,15 @@ class LinketinderApp {
         List<String> competencias = comps.split(",")*.trim()
 
         Candidato novo = new Candidato(nome, email, cpf, idade, estado, cep, descricao, competencias)
+        LinketinderDAO.inserirCandidato(novo)
         candidatos << novo
 
         println "Candidato cadastrado com sucesso!"
     }
 
+    // -------------------------------------------------------
+    // 4) CADASTRAR EMPRESA
+    // -------------------------------------------------------
     static void cadastrarEmpresa(Scanner scanner) {
         println "\n--- CADASTRO DE EMPRESA ---"
 
@@ -179,25 +173,57 @@ class LinketinderApp {
         List<String> competencias = comps.split(",")*.trim()
 
         Empresa nova = new Empresa(nome, email, cnpj, pais, estado, cep, descricao, competencias)
+        LinketinderDAO.inserirEmpresa(nova)
         empresas << nova
 
         println "Empresa cadastrada com sucesso!"
     }
 
+    // -------------------------------------------------------
+    // 5) LISTAR VAGAS
+    // -------------------------------------------------------
+    static void listarVagas() {
+        println "\n--- LISTA DE VAGAS ---"
+        if (vagas.isEmpty()) {
+            println "Não há vagas cadastradas!"
+        } else {
+            vagas.each { println it }
+        }
+    }
 
+    // -------------------------------------------------------
+    // 6) CANDIDATO CURTE VAGA
+    // -------------------------------------------------------
     static void candidatoCurteVaga(Scanner scanner) {
+        if (candidatos.isEmpty()) {
+            println "Não há candidatos cadastrados!"
+            return
+        }
+        if (vagas.isEmpty()) {
+            println "Não há vagas cadastradas!"
+            return
+        }
+
         println "\nEscolha um candidato (pelo índice):"
         candidatos.eachWithIndex { cand, idx ->
             println "[${idx}] ${cand.nome}"
         }
         int candIdx = scanner.nextLine().toInteger()
+        if (candIdx < 0 || candIdx >= candidatos.size()) {
+            println "Índice inválido."
+            return
+        }
         Candidato candidato = candidatos[candIdx]
 
         println "\nEscolha uma vaga (pelo índice):"
         vagas.eachWithIndex { vg, idx ->
-            println "[${idx}] ${vg.titulo} (Empresa: ${vg.empresa.nome})"
+            println "[${idx}] ${vg.titulo} (Empresa: ${vg.empresa?.nome})"
         }
         int vagaIdx = scanner.nextLine().toInteger()
+        if (vagaIdx < 0 || vagaIdx >= vagas.size()) {
+            println "Índice inválido."
+            return
+        }
         Vaga vaga = vagas[vagaIdx]
 
         Curtida curtidaExistente = curtidas.find { it.candidato == candidato && it.vaga == vaga }
@@ -214,12 +240,32 @@ class LinketinderApp {
         }
     }
 
+    // -------------------------------------------------------
+    // 7) EMPRESA CURTE CANDIDATO
+    // -------------------------------------------------------
     static void empresaCurteCandidato(Scanner scanner) {
+        if (empresas.isEmpty()) {
+            println "Não há empresas cadastradas!"
+            return
+        }
+        if (vagas.isEmpty()) {
+            println "Não há vagas cadastradas!"
+            return
+        }
+        if (candidatos.isEmpty()) {
+            println "Não há candidatos cadastrados!"
+            return
+        }
+
         println "\nEscolha uma empresa (pelo índice):"
         empresas.eachWithIndex { emp, idx ->
             println "[${idx}] ${emp.nome}"
         }
         int empIdx = scanner.nextLine().toInteger()
+        if (empIdx < 0 || empIdx >= empresas.size()) {
+            println "Índice inválido."
+            return
+        }
         Empresa empresa = empresas[empIdx]
 
         List<Vaga> vagasDaEmpresa = vagas.findAll { it.empresa == empresa }
@@ -233,6 +279,10 @@ class LinketinderApp {
             println "[${idx}] ${vg.titulo} (ID: ${vg.id})"
         }
         int vagaIdx = scanner.nextLine().toInteger()
+        if (vagaIdx < 0 || vagaIdx >= vagasDaEmpresa.size()) {
+            println "Índice inválido."
+            return
+        }
         Vaga vagaEscolhida = vagasDaEmpresa[vagaIdx]
 
         println "\nEscolha um candidato para curtir (pelo índice):"
@@ -240,6 +290,10 @@ class LinketinderApp {
             println "[${idx}] ${cand.nome}"
         }
         int candIdx = scanner.nextLine().toInteger()
+        if (candIdx < 0 || candIdx >= candidatos.size()) {
+            println "Índice inválido."
+            return
+        }
         Candidato candidato = candidatos[candIdx]
 
         Curtida curtidaExistente = curtidas.find { it.candidato == candidato && it.vaga == vagaEscolhida }
@@ -252,10 +306,62 @@ class LinketinderApp {
         } else {
             curtidaExistente.empresaCurtiu = true
             println "Empresa ${empresa.nome} curtiu o candidato ${candidato.nome} (vaga: '${vagaEscolhida.titulo}')."
-
             if (curtidaExistente.isMatch()) {
                 println ">>> MATCH REALIZADO! <<<"
             }
         }
+    }
+
+    // -------------------------------------------------------
+    // 8) EXIBIR CURTIDAS
+    // -------------------------------------------------------
+    static void exibirCurtidas() {
+        println "\n--- LISTA DE CURTIDAS ---"
+        if (curtidas.isEmpty()) {
+            println "Nenhuma curtida registrada ainda."
+        } else {
+            curtidas.each { println it }
+        }
+    }
+
+    // -------------------------------------------------------
+    // 10) CADASTRAR VAGA
+    // -------------------------------------------------------
+    static void cadastrarVaga(Scanner scanner) {
+        println "\n--- CADASTRO DE VAGA ---"
+        if (empresas.isEmpty()) {
+            println "Não há empresas cadastradas, impossível criar vaga."
+            return
+        }
+
+        print "Título da vaga: "
+        String titulo = scanner.nextLine()
+
+        println "Escolha a empresa proprietária desta vaga (pelo índice):"
+        empresas.eachWithIndex { emp, idx ->
+            println "[${idx}] ${emp.nome}"
+        }
+        int empIdx = scanner.nextLine().toInteger()
+        if (empIdx < 0 || empIdx >= empresas.size()) {
+            println "Índice inválido."
+            return
+        }
+        Empresa empresaDona = empresas[empIdx]
+
+        print "Competências requeridas (separe por vírgula): "
+        String comps = scanner.nextLine()
+        List<String> competencias = comps.split(",")*.trim()
+
+        // ID da vaga será gerado pelo banco. Então a princípio = null ou 0
+        Vaga novaVaga = new Vaga(null, titulo, empresaDona, competencias)
+
+        // Salva no banco
+        LinketinderDAO.inserirVaga(novaVaga)
+
+
+        // Adiciona na lista local
+        vagas << novaVaga
+
+        println "Vaga cadastrada com sucesso!"
     }
 }
