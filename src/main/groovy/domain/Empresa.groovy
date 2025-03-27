@@ -5,7 +5,7 @@ class Empresa implements Pessoa {
     String nome
     String email
     String descricao
-
+    String senha
     String cnpj
     String pais
     String estado
@@ -22,7 +22,7 @@ class Empresa implements Pessoa {
     void setDescricao(String descricao) { this.descricao = descricao }
 
     Empresa(String nome, String email, String cnpj, String pais,
-            String estado, String cep, String descricao,
+            String estado, String cep, String descricao, String senha,
             List<String> competenciasEsperadas) {
         this.nome = nome
         this.email = email
@@ -32,6 +32,7 @@ class Empresa implements Pessoa {
         this.cep = cep
         this.descricao = descricao
         this.competenciasEsperadas = competenciasEsperadas
+        this.senha = senha
     }
 
     @Override

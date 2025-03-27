@@ -1,3 +1,4 @@
+import java.time.LocalDate
 import java.util.Scanner
 import domain.Candidato
 import domain.Empresa
@@ -34,9 +35,13 @@ class LinketinderApp {
             println "6) Candidato curte vaga"
             println "7) Empresa curte candidato"
             println "8) Exibir curtidas"
-            println "9) Sair"
             println "9) Cadastrar nova vaga"
-            println "10) Sair"
+            println "10) Listar competências"
+            println "11) Excluir competência"
+            println "12) Atualizar nome de competência"
+            println "13) Excluir candidato"
+            println "14) Excluir empresa"
+            println "15) Sair"
             print "Escolha uma opção: "
 
             String opcao = scanner.nextLine()
@@ -66,12 +71,27 @@ class LinketinderApp {
                 case "8":
                     exibirCurtidas()
                     break
-                case "10":
-                    println "Saindo do sistema..."
-                    System.exit(0)
-                    break
                 case "9":
                     cadastrarVaga(scanner)
+                    break
+                case "10":
+                    listarCompetencias()
+                    break
+                case "11":
+                    excluirCompetencia(scanner)
+                    break
+                case "12":
+                    atualizarCompetencia(scanner)
+                    break
+                case "13":
+                    excluirCandidato(scanner)
+                    break
+                case "14":
+                    excluirEmpresa(scanner)
+                    break
+                case "15":
+                    println "Saindo do sistema..."
+                    System.exit(0)
                     break
                 default:
                     println "Opção inválida. Tente novamente."
@@ -134,7 +154,19 @@ class LinketinderApp {
         String comps = scanner.nextLine()
         List<String> competencias = comps.split(",")*.trim()
 
-        Candidato novo = new Candidato(nome, email, cpf, idade, estado, cep, descricao, competencias)
+        print "Sobrenome: "
+        String sobrenome = scanner.nextLine()
+
+        print "Data de Nascimento (AAAA-MM-DD): "
+        LocalDate dataNasc = LocalDate.parse(scanner.nextLine())
+
+        print "Senha: "
+        String senha = scanner.nextLine()
+
+        Candidato novo = new Candidato(
+                nome, sobrenome, dataNasc, email, cpf, idade, "Brasil",
+                estado, cep, descricao, competencias, senha
+        )
         LinketinderDAO.inserirCandidato(novo)
         candidatos << novo
 
@@ -171,8 +203,9 @@ class LinketinderApp {
         print "Competências esperadas (separe por vírgula): "
         String comps = scanner.nextLine()
         List<String> competencias = comps.split(",")*.trim()
-
-        Empresa nova = new Empresa(nome, email, cnpj, pais, estado, cep, descricao, competencias)
+        print "Senha: "
+        String senha = scanner.nextLine()
+        Empresa nova = new Empresa(nome, email, cnpj, pais, estado, cep, descricao, competencias, senha)
         LinketinderDAO.inserirEmpresa(nova)
         empresas << nova
 
@@ -347,21 +380,68 @@ class LinketinderApp {
             return
         }
         Empresa empresaDona = empresas[empIdx]
-
+        print "Local da vaga: "
+        String local = scanner.nextLine()
         print "Competências requeridas (separe por vírgula): "
         String comps = scanner.nextLine()
         List<String> competencias = comps.split(",")*.trim()
 
-        // ID da vaga será gerado pelo banco. Então a princípio = null ou 0
-        Vaga novaVaga = new Vaga(null, titulo, empresaDona, competencias)
+        Vaga novaVaga = new Vaga(null, titulo, empresaDona, competencias, local)
 
-        // Salva no banco
         LinketinderDAO.inserirVaga(novaVaga)
 
 
-        // Adiciona na lista local
         vagas << novaVaga
 
         println "Vaga cadastrada com sucesso!"
     }
+    static void listarCompetencias() {
+        println "\n--- LISTA DE COMPETÊNCIAS ---"
+        List<String> comps = LinketinderDAO.listarTodasCompetencias()
+        if (comps.isEmpty()) {
+            println "Nenhuma competência cadastrada!"
+        } else {
+            comps.each { println "- $it" }
+        }
+    }
+
+    static void excluirCompetencia(Scanner scanner) {
+        println "\n--- EXCLUSÃO DE COMPETÊNCIA ---"
+        print "Digite o nome da competência a excluir: "
+        String nome = scanner.nextLine()
+        LinketinderDAO.excluirCompetencia(nome)
+        println "Competência '$nome' excluída com sucesso!"
+    }
+
+    static void atualizarCompetencia(Scanner scanner) {
+        println "\n--- ATUALIZAÇÃO DE COMPETÊNCIA ---"
+        print "Nome atual da competência: "
+        String atual = scanner.nextLine()
+        print "Novo nome: "
+        String novo = scanner.nextLine()
+        LinketinderDAO.atualizarCompetencia(atual, novo)
+        println "Competência atualizada com sucesso!"
+    }
+
+    static void excluirCandidato(Scanner scanner) {
+        listarCandidatos()
+        print "Digite o ID do candidato a excluir: "
+        int id = scanner.nextLine().toInteger()
+        LinketinderDAO.excluirCandidato(id)
+        candidatos.removeIf { it.id == id }
+        println "Candidato excluído com sucesso!"
+    }
+
+    static void excluirEmpresa(Scanner scanner) {
+        listarEmpresas()
+        print "Digite o ID da empresa a excluir: "
+        int id = scanner.nextLine().toInteger()
+        LinketinderDAO.excluirEmpresa(id)
+        empresas.removeIf { it.id == id }
+        vagas.removeIf { it.empresa.id == id } // Limpa localmente também
+        println "Empresa excluída com sucesso!"
+    }
+
 }
+
+
