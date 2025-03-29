@@ -1,3 +1,5 @@
+import domain.Candidato
+import domain.Empresa
 import spock.lang.Specification
 
 class LinketinderAppSpec extends Specification {

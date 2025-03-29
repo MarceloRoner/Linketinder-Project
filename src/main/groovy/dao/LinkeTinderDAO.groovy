@@ -459,6 +459,110 @@ class LinketinderDAO {
         }
     }
 
+    static void atualizarCandidato(Candidato c) {
+        Connection conn = null
+        try {
+            conn = getConnection()
+            String sql = """
+            UPDATE candidato 
+            SET nome = ?, sobrenome = ?, data_nascimento = ?, email = ?, 
+                cpf = ?, pais = ?, estado = ?, cep = ?, descricao = ?, senha = ?
+            WHERE id = ?
+        """
+            PreparedStatement stmt = conn.prepareStatement(sql)
+            stmt.setString(1, c.nome)
+            stmt.setString(2, c.sobrenome)
+            stmt.setDate(3, java.sql.Date.valueOf(c.dataNascimento))
+            stmt.setString(4, c.email)
+            stmt.setString(5, c.cpf)
+            stmt.setString(6, c.pais)
+            stmt.setString(7, c.estado)
+            stmt.setString(8, c.cep)
+            stmt.setString(9, c.descricao)
+            stmt.setString(10, c.senha)
+            stmt.setInt(11, c.id)
+            stmt.executeUpdate()
+            stmt.close()
+        } finally {
+            if (conn != null) conn.close()
+        }
+    }
+    static void atualizarEmpresa(Empresa e) {
+        Connection conn = null
+        try {
+            conn = getConnection()
+            String sql = """
+            UPDATE empresa 
+            SET nome = ?, email = ?, cnpj = ?, pais = ?, estado = ?, 
+                cep = ?, descricao = ?, senha = ?
+            WHERE id = ?
+        """
+            PreparedStatement stmt = conn.prepareStatement(sql)
+            stmt.setString(1, e.nome)
+            stmt.setString(2, e.email)
+            stmt.setString(3, e.cnpj)
+            stmt.setString(4, e.pais)
+            stmt.setString(5, e.estado)
+            stmt.setString(6, e.cep)
+            stmt.setString(7, e.descricao)
+            stmt.setString(8, e.senha)
+            stmt.setInt(9, e.id)
+            stmt.executeUpdate()
+            stmt.close()
+        } finally {
+            if (conn != null) conn.close()
+        }
+    }
+    static void atualizarVaga(Vaga v) {
+        Connection conn = null
+        try {
+            conn = getConnection()
+            String sql = """
+            UPDATE vaga 
+            SET nome = ?, local = ?, id_empresa = ?
+            WHERE id = ?
+        """
+            PreparedStatement stmt = conn.prepareStatement(sql)
+            stmt.setString(1, v.titulo)
+            stmt.setString(2, v.local)
+            stmt.setInt(3, v.empresa.id)
+            stmt.setInt(4, v.id)
+            stmt.executeUpdate()
+            stmt.close()
+        } finally {
+            if (conn != null) conn.close()
+        }
+    }
+    static void excluirVaga(int id) {
+        Connection conn = null
+        try {
+            conn = getConnection()
+
+            PreparedStatement stmt1 = conn.prepareStatement(
+                    "DELETE FROM vaga_competencia WHERE id_vaga = ?"
+            )
+            stmt1.setInt(1, id)
+            stmt1.executeUpdate()
+            stmt1.close()
+
+            PreparedStatement stmt2 = conn.prepareStatement(
+                    "DELETE FROM curtida WHERE id_vaga = ?"
+            )
+            stmt2.setInt(1, id)
+            stmt2.executeUpdate()
+            stmt2.close()
+
+            PreparedStatement stmt3 = conn.prepareStatement(
+                    "DELETE FROM vaga WHERE id = ?"
+            )
+            stmt3.setInt(1, id)
+            stmt3.executeUpdate()
+            stmt3.close()
+
+        } finally {
+            if (conn != null) conn.close()
+        }
+    }
 
 
 }

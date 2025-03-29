@@ -41,7 +41,11 @@ class LinketinderApp {
             println "12) Atualizar nome de competência"
             println "13) Excluir candidato"
             println "14) Excluir empresa"
-            println "15) Sair"
+            println "15) Excluir vaga"
+            println "16) Atualizar candidato"
+            println "17) Atualizar empresa"
+            println "18) Atualizar vaga"
+            println "19) Sair"
             print "Escolha uma opção: "
 
             String opcao = scanner.nextLine()
@@ -90,6 +94,18 @@ class LinketinderApp {
                     excluirEmpresa(scanner)
                     break
                 case "15":
+                    excluirVaga(scanner)
+                    break
+                case "16":
+                    atualizarCandidato(scanner)
+                    break
+                case "17":
+                    atualizarEmpresa(scanner)
+                    break
+                case "18":
+                    atualizarVaga(scanner)
+                    break
+                case "19":
                     println "Saindo do sistema..."
                     System.exit(0)
                     break
@@ -441,6 +457,122 @@ class LinketinderApp {
         vagas.removeIf { it.empresa.id == id } // Limpa localmente também
         println "Empresa excluída com sucesso!"
     }
+
+    static void excluirVaga(Scanner scanner) {
+        listarVagas()
+        print "Digite o ID da vaga a excluir: "
+        int id = scanner.nextLine().toInteger()
+        LinketinderDAO.excluirVaga(id)
+        vagas.removeIf { it.id == id }
+        println "Vaga excluída com sucesso!"
+    }
+
+    static void atualizarCandidato(Scanner scanner) {
+        listarCandidatos()
+        print "Digite o ID do candidato que deseja atualizar: "
+        int id = scanner.nextLine().toInteger()
+        Candidato candidato = candidatos.find { it.id == id }
+        if (!candidato) {
+            println "Candidato com ID $id não encontrado."
+            return
+        }
+
+        println "\n--- Atualização de Candidato ---"
+        print "Novo nome (${candidato.nome}): "
+        candidato.nome = scanner.nextLine()
+
+        print "Novo sobrenome (${candidato.sobrenome}): "
+        candidato.sobrenome = scanner.nextLine()
+
+        print "Novo e-mail (${candidato.email}): "
+        candidato.email = scanner.nextLine()
+
+        print "Novo CPF (${candidato.cpf}): "
+        candidato.cpf = scanner.nextLine()
+
+        print "Novo país (${candidato.pais}): "
+        candidato.pais = scanner.nextLine()
+
+        print "Novo estado (${candidato.estado}): "
+        candidato.estado = scanner.nextLine()
+
+        print "Novo CEP (${candidato.cep}): "
+        candidato.cep = scanner.nextLine()
+
+        print "Nova descrição: "
+        candidato.descricao = scanner.nextLine()
+
+        print "Nova senha: "
+        candidato.senha = scanner.nextLine()
+
+        LinketinderDAO.atualizarCandidato(candidato)
+        println "Candidato atualizado com sucesso!"
+    }
+    static void atualizarEmpresa(Scanner scanner) {
+        listarEmpresas()
+        print "Digite o ID da empresa que deseja atualizar: "
+        int id = scanner.nextLine().toInteger()
+        Empresa empresa = empresas.find { it.id == id }
+        if (!empresa) {
+            println "Empresa com ID $id não encontrada."
+            return
+        }
+
+        println "\n--- Atualização de Empresa ---"
+        print "Novo nome (${empresa.nome}): "
+        empresa.nome = scanner.nextLine()
+
+        print "Novo e-mail (${empresa.email}): "
+        empresa.email = scanner.nextLine()
+
+        print "Novo CNPJ (${empresa.cnpj}): "
+        empresa.cnpj = scanner.nextLine()
+
+        print "Novo país (${empresa.pais}): "
+        empresa.pais = scanner.nextLine()
+
+        print "Novo estado (${empresa.estado}): "
+        empresa.estado = scanner.nextLine()
+
+        print "Novo CEP (${empresa.cep}): "
+        empresa.cep = scanner.nextLine()
+
+        print "Nova descrição: "
+        empresa.descricao = scanner.nextLine()
+
+        print "Nova senha: "
+        empresa.senha = scanner.nextLine()
+
+        LinketinderDAO.atualizarEmpresa(empresa)
+        println "Empresa atualizada com sucesso!"
+    }
+    static void atualizarVaga(Scanner scanner) {
+        listarVagas()
+        print "Digite o ID da vaga que deseja atualizar: "
+        int id = scanner.nextLine().toInteger()
+        Vaga vaga = vagas.find { it.id == id }
+        if (!vaga) {
+            println "Vaga com ID $id não encontrada."
+            return
+        }
+
+        println "\n--- Atualização de Vaga ---"
+        print "Novo título (${vaga.titulo}): "
+        vaga.titulo = scanner.nextLine()
+
+        print "Novo local (${vaga.local}): "
+        vaga.local = scanner.nextLine()
+
+        print "Competências (separe por vírgula): "
+        String comps = scanner.nextLine()
+        vaga.competenciasRequeridas = comps.split(",")*.trim()
+
+        LinketinderDAO.atualizarVaga(vaga)
+        println "Vaga atualizada com sucesso!"
+    }
+
+
+
 
 }
 
