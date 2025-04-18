@@ -1,6 +1,4 @@
-
-import domain.Candidato
-import domain.Vaga
+package domain
 
 class Curtida {
     Candidato candidato
@@ -18,6 +16,6 @@ class Curtida {
     }
 
     String toString() {
-        return "Curtida(candidato=${candidato?.nome}, vaga=${vaga?.titulo}, match=${isMatch()})"
+        return "domain.Curtida(candidato=${candidato?.nome}, vaga=${vaga?.titulo}, match=${isMatch()})"
     }
 }

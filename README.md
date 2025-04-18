@@ -1,5 +1,4 @@
-
-# 🏆 Linketinder Project 
+# 🏆 Linketinder Project
 
 Projeto desenvolvido em **Groovy** para o **ZG-HERO (K1-T4)**. Trata-se de um **MVP para simular um sistema de recrutamento estilo "LinkedIn + Tinder."**.
 
@@ -9,102 +8,96 @@ Projeto desenvolvido em **Groovy** para o **ZG-HERO (K1-T4)**. Trata-se de um **
 ## Como Executar
 1. Certifique-se de ter o [Groovy](https://groovy-lang.org/) instalado.
 2. Clone este repositório:
-   git clone https://github.com/<seu-usuario>/Linketinder-Project.git
-Dentro da pasta do projeto, vá até src/main/groovy.
-Execute o comando:
+   ```bash
+   git clone https://github.com/MarceloRoner/Linketinder-Project.git
+   ```
+3. Dentro da pasta do projeto, vá até `src/main/groovy` e execute:
 
-```
+```bash
 groovy LinketinderApp.groovy
 ```
 
 Siga as instruções do menu no terminal para listar ou cadastrar candidatos/empresas.
 
-Ou, se preferir, configurar um **Gradle** ou **Maven** para compilar. Mas, para um MVP rápido, basta rodar direto pelo `groovy LinketinderApp.groovy`.
+Ou, se preferir, configure um **Gradle** para compilar e rodar testes. Para um MVP rápido, basta rodar direto pelo Groovy.
 
 ---
 
-## 🔄 Nova Lógica com Integração a Banco de Dados
+## 🔄 Refatoração com Clean Code e Arquitetura em Camadas
 
-### 🗂️ Organização por Módulos
+### ✨ Princípios Aplicados
+- **SRP (Single Responsibility Principle)**: cada classe tem uma única responsabilidade
+- **DRY (Don't Repeat Yourself)**: lógica reutilizada nos Services e DAOs
+- **Desacoplamento**: o App não depende diretamente dos DAOs
+- **Coesão**: responsabilidades agrupadas por módulo lógico
+- **Lei de Demeter**: o App se comunica apenas com seus "amigos diretos" (services)
 
-O projeto foi reorganizado em **módulos separados**, com os arquivos distribuídos conforme suas responsabilidades:
+### 🧱 Camadas do Projeto
+- `domain/` → Entidades do sistema (Candidato, Empresa, Vaga, Curtida)
+- `dao/` → Acesso ao banco de dados (PostgreSQL via JDBC)
+- `service/` → Regras de negócio e coordenação das entidades
+- `main/` → Interface CLI (`LinketinderApp`) como orquestrador
+- `test/` → Testes automatizados com Spock Framework
 
-- `dao/` → Acesso a dados com JDBC + PostgreSQL
-- `domain/` → Entidades principais: `Candidato`, `Empresa`, `Vaga`, etc.
-- `main/` → Aplicação principal (`LinketinderApp`) e lógica de curtidas (`Curtida`)
+---
 
-### 🛢️ Integração com PostgreSQL
-
-A lógica antiga com listas fixas foi substituída por uma camada DAO com SQL real:
-
-- Inserção e busca de candidatos/empresas via PostgreSQL
-- Relacionamento N:N com tabelas intermediárias (`candidato_competencia`, etc.)
-- Evita duplicidade de competências com a função `inserirOuBuscarCompetencia`
-- Dados agora são **persistidos no banco de dados**
+## 🛢️ Integração com PostgreSQL
+- Todos os dados persistidos via SQL real
+- Relacionamentos N:N modelados com tabelas intermediárias
+- Script SQL disponível para criação do schema (`linketinder_project.sql`)
+- Dados de exemplo incluídos para testes
 
 ---
 
 ## ❤️ Sistema de Curtidas
-
-- A classe `Curtida` permite:
-  - Candidato curtir uma vaga
-  - Empresa curtir um candidato
-  - Se ambos curtirem → **MATCH!**
-- As curtidas ainda são mantidas em memória por enquanto
-- Visualize o status atual das curtidas pelo menu
+- Candidatos e empresas podem curtir
+- Se ambos curtirem → **MATCH!**
+- Curtidas atualmente mantidas em memória
+- Lógica encapsulada na classe `CurtidaService`
 
 ---
 
-## 🧪 Testes Unitários (Spock)
+## 🧪 Testes Automatizados (Spock)
+- Serviços testados com Spock (`src/test/groovy/service/*.groovy`)
+- Testes de integração com banco real e lógica de match
 
-- Testes escritos em **Groovy** com o framework **Spock**
-- Para rodar:
-  ```bash
-  gradle test
-  ```
-- Verifique o relatório em `build/reports/tests/test/index.html`
-
----
-
-## 🌐 Frontend em TypeScript
-
-O projeto possui um frontend independente que simula as funcionalidades do sistema com dados em `localStorage`.
-
-### Como rodar:
-
-1. Instale o Node.js
-2. Acesse a pasta `frontend/` e rode:
-   ```bash
-   npm install
-   npm run build
-   npm start
-   ```
-
-### Estrutura:
-
-- `cadastro-candidato.html`, `cadastro-empresa.html`, etc.
-- Dados armazenados no navegador (ainda sem integração com backend)
-- Validações via Regex para todos os campos
+### Rodando os testes:
+```bash
+gradle test
+```
+Acesse o relatório em: `build/reports/tests/test/index.html`
 
 ---
 
-## 🧮 Banco de Dados: Script e Modelagem
+## 🌐 Frontend (Independente - Em TypeScript)
+- Frontend de testes com validação e simulação em `localStorage`
+- Simula cadastro e listagem de usuários
+- Validações com Regex
 
+```bash
+cd frontend/
+npm install
+npm run build
+npm start
+```
+
+---
+
+## 🧮 Banco de Dados
 ### Como usar:
-1. Crie o banco `linketinder` no pgAdmin ou terminal
-2. Rode `linketinder_project.sql`
-3. Visualize a modelagem no arquivo `linketinder_project.png`
-
-### Tabelas principais:
-- `candidato`, `empresa`, `competencia`, `vaga`
-- Relacionamentos N:N com tabelas pivot
-- Tabela `curtida` (em desenvolvimento para futura persistência)
+1. Crie o banco `linketinder` no PostgreSQL
+2. Rode o script `linketinder_project.sql`
+3. Use o modelo `linketinder_project.png` para visualizar a modelagem
 
 ---
 
-## ✅ Contribuições recentes
+## ✅ Contribuições Recentes
+- Refatoração completa com Clean Code
+- Aplicação de SRP, DRY, Demeter e modularização
+- Testes Spock com integração real
+- Interface CLI desacoplada e simples
+- README atualizado para refletir a nova arquitetura
 
-- Reestruturação total do projeto
-- Lógica principal com DAO e SQL real
-- Menu funcional com integração de dados reais
-- Atualização do README e boas práticas com commit semântico
+---
+
+**Feito por Marcelo Roner com paixão, Groovy e Clean Code.** 🚀
