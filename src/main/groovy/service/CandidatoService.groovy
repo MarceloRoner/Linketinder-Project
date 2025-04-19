@@ -1,24 +1,30 @@
 package service
 
-import dao.CandidatoDAO
+import dao.ICandidatoDAO
 import domain.Candidato
 
 class CandidatoService {
 
+    private final ICandidatoDAO dao
+
+    CandidatoService(ICandidatoDAO dao) {
+        this.dao = dao
+    }
+
     List<Candidato> listarTodos() {
-        return CandidatoDAO.listarCandidatos()
+        return dao.listarCandidatos()
     }
 
     void cadastrar(Candidato candidato) {
-        CandidatoDAO.inserirCandidato(candidato)
+        dao.inserirCandidato(candidato)
     }
 
     void atualizar(Candidato candidato) {
-        CandidatoDAO.atualizarCandidato(candidato)
+        dao.atualizarCandidato(candidato)
     }
 
     void excluir(int id) {
-        CandidatoDAO.excluirCandidato(id)
+        dao.excluirCandidato(id)
     }
 
     Candidato buscarPorId(int id) {

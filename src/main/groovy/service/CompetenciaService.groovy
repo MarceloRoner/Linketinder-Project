@@ -1,25 +1,28 @@
 package service
 
-import dao.CompetenciaDAO
-import utils.DatabaseUtils
-
-import java.sql.Connection
+import dao.ICompetenciaDAO
 
 class CompetenciaService {
 
+    private final ICompetenciaDAO dao
+
+    CompetenciaService(ICompetenciaDAO dao) {
+        this.dao = dao
+    }
+
     List<String> listarTodas() {
-        return CompetenciaDAO.listarTodasCompetencias()
+        return dao.listarTodasCompetencias()
     }
 
     void excluir(String nome) {
-        CompetenciaDAO.excluirCompetencia(nome)
+        dao.excluirCompetencia(nome)
     }
 
     void atualizar(String nomeAntigo, String nomeNovo) {
-        CompetenciaDAO.atualizarCompetencia(nomeAntigo, nomeNovo)
+        dao.atualizarCompetencia(nomeAntigo, nomeNovo)
     }
 
-    int obterOuInserir(String nome, Connection conn) {
-        return CompetenciaDAO.inserirOuBuscarCompetencia(conn, nome)
+    int obterOuInserir(String nome) {
+        return dao.inserirOuBuscarCompetencia(nome)
     }
 }

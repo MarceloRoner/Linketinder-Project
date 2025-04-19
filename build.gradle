@@ -3,28 +3,31 @@ plugins {
     id 'application'
 }
 
-group = 'org.example'
+group   = 'org.example'
 version = '1.0'
 
-repositories {
-    mavenCentral()
-}
+repositories { mavenCentral() }
 
 dependencies {
     implementation 'org.apache.groovy:groovy:4.0.14'
+    runtimeOnly   'org.postgresql:postgresql:42.7.5'
 
     testImplementation 'org.spockframework:spock-core:2.3-groovy-4.0'
-
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
-
-    runtimeOnly 'org.postgresql:postgresql:42.7.5'
 }
 
-test {
-    useJUnitPlatform()
+test { useJUnitPlatform() }
+
+application {
+    mainClass = 'boot.Main'
 }
 
 application {
-    mainClass = 'org.example.LinketinderApp'
+    mainClass = 'boot.Main'
 }
+
+tasks.named('run') {
+    standardInput = System.in
+}
+

@@ -1,24 +1,30 @@
 package service
 
-import dao.EmpresaDAO
+import dao.IEmpresaDAO
 import domain.Empresa
 
 class EmpresaService {
 
+    private final IEmpresaDAO dao
+
+    EmpresaService(IEmpresaDAO dao) {
+        this.dao = dao
+    }
+
     List<Empresa> listarTodas() {
-        return EmpresaDAO.listarEmpresas()
+        return dao.listarEmpresas()
     }
 
     void cadastrar(Empresa empresa) {
-        EmpresaDAO.inserirEmpresa(empresa)
+        dao.inserirEmpresa(empresa)
     }
 
     void atualizar(Empresa empresa) {
-        EmpresaDAO.atualizarEmpresa(empresa)
+        dao.atualizarEmpresa(empresa)
     }
 
     void excluir(int id) {
-        EmpresaDAO.excluirEmpresa(id)
+        dao.excluirEmpresa(id)
     }
 
     Empresa buscarPorId(int id) {

@@ -1,24 +1,30 @@
 package service
 
-import dao.VagaDAO
+import dao.IVagaDAO
 import domain.Vaga
 
 class VagaService {
 
+    private final IVagaDAO dao
+
+    VagaService(IVagaDAO dao) {
+        this.dao = dao
+    }
+
     List<Vaga> listarTodas() {
-        return VagaDAO.listarVagas()
+        return dao.listarVagas()
     }
 
     void cadastrar(Vaga vaga) {
-        VagaDAO.inserirVaga(vaga)
+        dao.inserirVaga(vaga)
     }
 
     void atualizar(Vaga vaga) {
-        VagaDAO.atualizarVaga(vaga)
+        dao.atualizarVaga(vaga)
     }
 
     void excluir(int id) {
-        VagaDAO.excluirVaga(id)
+        dao.excluirVaga(id)
     }
 
     Vaga buscarPorId(int id) {

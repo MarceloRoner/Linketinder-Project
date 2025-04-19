@@ -2,21 +2,29 @@ package service
 
 import spock.lang.Specification
 import domain.Empresa
+import dao.IEmpresaDAO
 
 class EmpresaServiceSpec extends Specification {
 
-    def service = new EmpresaService()
+    def dao = Stub(IEmpresaDAO)
+    def service = new EmpresaService(dao)
 
-    def "deve cadastrar e buscar empresa por ID"() {
+    def "deve buscar empresa por ID"() {
         given:
-        def empresa = new Empresa("DevHouse", "devhouse@mail.com", "11223344556677", "Brasil", "SP", "00000-000", "Desenvolvimento", "senha123", ["Kotlin"])
-        service.cadastrar(empresa)
-        def salva = service.listarTodas().find { it.cnpj == "11223344556677" }
+        def empresa = new Empresa(
+                "DevHouse", "devhouse@mail.com", "11223344556677",
+                "Brasil", "SP", "00000-000", "Desenvolvimento",
+                "senha123", ["Kotlin"]
+        )
+        empresa.id = 99
+
+        dao.listarEmpresas() >> [empresa]
 
         when:
-        def resultado = service.buscarPorId(salva.id)
+        def resultado = service.buscarPorId(99)
 
         then:
+        resultado != null
         resultado.nome == "DevHouse"
     }
 }

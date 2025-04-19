@@ -1,11 +1,14 @@
 # 🏆 Linketinder Project
 
-Projeto desenvolvido em **Groovy** para o **ZG-HERO (K1-T4)**. Trata-se de um **MVP para simular um sistema de recrutamento estilo "LinkedIn + Tinder."**.
+Projeto desenvolvido em **Groovy** para o **ZG-HERO (K1-T4)**. Trata-se de um **MVP para simular um sistema de recrutamento estilo "LinkedIn + Tinder."**
 
 ![GitHub repo size](https://img.shields.io/github/repo-size/MarceloRoner/Linketinder-Project)
 ![GitHub last commit](https://img.shields.io/github/last-commit/MarceloRoner/Linketinder-Project)
 
-## Como Executar
+---
+
+## 🚀 Como Executar
+
 1. Certifique-se de ter o [Groovy](https://groovy-lang.org/) instalado.
 2. Clone este repositório:
    ```bash
@@ -13,66 +16,90 @@ Projeto desenvolvido em **Groovy** para o **ZG-HERO (K1-T4)**. Trata-se de um **
    ```
 3. Dentro da pasta do projeto, vá até `src/main/groovy` e execute:
 
-```bash
-groovy LinketinderApp.groovy
-```
+   ```bash
+   groovy Main.groovy
+   ```
 
-Siga as instruções do menu no terminal para listar ou cadastrar candidatos/empresas.
-
-Ou, se preferir, configure um **Gradle** para compilar e rodar testes. Para um MVP rápido, basta rodar direto pelo Groovy.
+> Siga as instruções no terminal para cadastrar ou visualizar candidatos, empresas, vagas e matches.
 
 ---
 
-## 🔄 Refatoração com Clean Code e Arquitetura em Camadas
+## 🔧 Arquitetura Baseada em Camadas
 
-### ✨ Princípios Aplicados
-- **SRP (Single Responsibility Principle)**: cada classe tem uma única responsabilidade
-- **DRY (Don't Repeat Yourself)**: lógica reutilizada nos Services e DAOs
-- **Desacoplamento**: o App não depende diretamente dos DAOs
-- **Coesão**: responsabilidades agrupadas por módulo lógico
-- **Lei de Demeter**: o App se comunica apenas com seus "amigos diretos" (services)
+O sistema foi refatorado para seguir boas práticas de projeto, com separação clara de responsabilidades.
 
-### 🧱 Camadas do Projeto
-- `domain/` → Entidades do sistema (Candidato, Empresa, Vaga, Curtida)
-- `dao/` → Acesso ao banco de dados (PostgreSQL via JDBC)
-- `service/` → Regras de negócio e coordenação das entidades
-- `main/` → Interface CLI (`LinketinderApp`) como orquestrador
-- `test/` → Testes automatizados com Spock Framework
+### ✨ Princípios Aplicados (SOLID & Clean Code)
+- **SRP** – Cada classe tem uma única responsabilidade
+- **OCP** – Código aberto para extensão, fechado para modificação
+- **LSP** – Substituição de implementações via interfaces DAO
+- **ISP** – Interfaces específicas por entidade
+- **DIP** – `AppContext` injeta dependências para os serviços e DAOs
+
+---
+
+## 🧱 Estrutura de Pastas
+
+```
+src/
+├── main/
+│   ├── app/           # CLI (LinketinderApp) como orquestrador da aplicação
+│   ├── context/       # AppContext com injeção manual de dependências
+│   ├── dao/           # Interfaces e implementações JDBC (PostgreSQL)
+│   ├── domain/        # Entidades: Candidato, Empresa, Vaga, Curtida
+│   ├── service/       # Regras de negócio por entidade
+│   └── Main.groovy    # Bootstrap da aplicação
+│
+├── test/
+│   └── service/       # Testes unitários com Spock
+```
+
+---
+
+## 🧪 Testes Automatizados com Spock
+
+- Testes unitários para cada service (`src/test/groovy/service/`)
+- Mock de DAOs via Spock
+- Testes de integração com banco de dados real
+
+### Rodando os testes:
+
+```bash
+gradle test
+```
+
+Relatório em: `build/reports/tests/test/index.html`
 
 ---
 
 ## 🛢️ Integração com PostgreSQL
-- Todos os dados persistidos via SQL real
-- Relacionamentos N:N modelados com tabelas intermediárias
-- Script SQL disponível para criação do schema (`linketinder_project.sql`)
-- Dados de exemplo incluídos para testes
+
+- Script `linketinder_project.sql` para criação do schema
+- Relacionamentos N:N via tabelas pivot
+- CRUD completo com JDBC
+- DAO com interface e implementação desacopladas
+- `AppContext` gerencia instâncias dos DAOs e Services
+
+### Configuração do banco:
+
+1. Crie o banco `linketinder`
+2. Rode o script SQL
+3. Atualize os dados de conexão no DAO se necessário
 
 ---
 
-## ❤️ Sistema de Curtidas
-- Candidatos e empresas podem curtir
-- Se ambos curtirem → **MATCH!**
-- Curtidas atualmente mantidas em memória
-- Lógica encapsulada na classe `CurtidaService`
+## ❤️ Sistema de Curtidas e Match
+
+- Candidatos podem curtir empresas, e vice-versa
+- Quando o match é mútuo, o sistema exibe automaticamente
+- Registros de curtidas e matches persistidos no banco
+- Regra de negócio centralizada em `CurtidaService`
 
 ---
 
-## 🧪 Testes Automatizados (Spock)
-- Serviços testados com Spock (`src/test/groovy/service/*.groovy`)
-- Testes de integração com banco real e lógica de match
+## 🌐 Frontend Simples (TypeScript)
 
-### Rodando os testes:
-```bash
-gradle test
-```
-Acesse o relatório em: `build/reports/tests/test/index.html`
-
----
-
-## 🌐 Frontend (Independente - Em TypeScript)
-- Frontend de testes com validação e simulação em `localStorage`
-- Simula cadastro e listagem de usuários
-- Validações com Regex
+- Protótipo de frontend com validações
+- Simulação de cadastro, listagem e login no `localStorage`
 
 ```bash
 cd frontend/
@@ -83,21 +110,17 @@ npm start
 
 ---
 
-## 🧮 Banco de Dados
-### Como usar:
-1. Crie o banco `linketinder` no PostgreSQL
-2. Rode o script `linketinder_project.sql`
-3. Use o modelo `linketinder_project.png` para visualizar a modelagem
+## ✅ Destaques da Refatoração
+
+- ✅ Separação entre camadas de domínio, DAO, service e aplicação
+- ✅ Inversão de dependências com `AppContext`
+- ✅ DAOs desacoplados com interfaces
+- ✅ Testes unitários e de integração com Spock
+- ✅ Bootstrap via `Main.groovy` com inicialização clara
+- ✅ CLI modular via `LinketinderApp.groovy`
+- ✅ README atualizado e documentado
 
 ---
 
-## ✅ Contribuições Recentes
-- Refatoração completa com Clean Code
-- Aplicação de SRP, DRY, Demeter e modularização
-- Testes Spock com integração real
-- Interface CLI desacoplada e simples
-- README atualizado para refletir a nova arquitetura
-
----
-
-**Feito por Marcelo Roner com paixão, Groovy e Clean Code.** 🚀
+**Feito com Groovy, PostgreSQL e Clean Code por Marcelo Roner.**  
+**Powered by ZG Soluções | Acelera ZG** 💥

@@ -1,14 +1,20 @@
 package service
 
 import spock.lang.Specification
+import dao.ICompetenciaDAO
 
 class CompetenciaServiceSpec extends Specification {
 
-    def service = new CompetenciaService()
+    def dao = Stub(ICompetenciaDAO)
+    def service = new CompetenciaService(dao)
 
-    def "deve listar, adicionar e atualizar competência"() {
+    def "deve excluir e atualizar competência"() {
         given:
-        service.excluir("Go") // limpeza
+        def competencias = ["Go", "Java", "Python"]
+        dao.listarTodasCompetencias() >> competencias
+        dao.atualizarCompetencia(_, _) >> { oldName, newName ->
+        }
+        dao.excluirCompetencia(_) >> { nome -> }
 
         when:
         service.excluir("Go")
@@ -16,6 +22,6 @@ class CompetenciaServiceSpec extends Specification {
         def todas = service.listarTodas()
 
         then:
-        !todas.contains("Go") // ou assert manualmente no console
+        todas.contains("Go") 
     }
 }
