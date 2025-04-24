@@ -1,28 +1,16 @@
 package app
 
+import facade.LinketinderFacade
 import domain.*
-import service.*
 import java.time.LocalDate
 import java.util.Scanner
 
 class LinketinderApp {
 
-    private final CandidatoService candidatoService
-    private final EmpresaService   empresaService
-    private final VagaService      vagaService
-    private final CompetenciaService competenciaService
-    private final CurtidaService     curtidaService
+    private final LinketinderFacade facade
 
-    LinketinderApp(CandidatoService candidatoService,
-                   EmpresaService   empresaService,
-                   VagaService      vagaService,
-                   CompetenciaService competenciaService,
-                   CurtidaService     curtidaService) {
-        this.candidatoService   = candidatoService
-        this.empresaService     = empresaService
-        this.vagaService        = vagaService
-        this.competenciaService = competenciaService
-        this.curtidaService     = curtidaService
+    LinketinderApp(LinketinderFacade facade) {
+        this.facade = facade
     }
 
     void iniciar() {
@@ -83,27 +71,27 @@ class LinketinderApp {
 
     private void listarCandidatos() {
         println "\n--- CANDIDATOS ---"
-        candidatoService.listarTodos().each { println it }
+        facade.listarCandidatos().each { println it }
     }
 
     private void listarEmpresas() {
         println "\n--- EMPRESAS ---"
-        empresaService.listarTodas().each { println it }
+        facade.listarEmpresas().each { println it }
     }
 
     private void listarVagas() {
         println "\n--- VAGAS ---"
-        vagaService.listarTodas().each { println it }
+        facade.listarVagas().each { println it }
     }
 
     private void listarCompetencias() {
         println "\n--- COMPETÊNCIAS ---"
-        competenciaService.listarTodas().each { println "- $it" }
+        facade.listarCompetencias().each { println "- $it" }
     }
 
     private void exibirCurtidas() {
         println "\n--- CURTIDAS ---"
-        curtidaService.listarTodas().each { println it }
+        facade.listarCurtidas().each { println it }
     }
 
     private void cadastrarCandidato(Scanner sc) {
@@ -120,7 +108,7 @@ class LinketinderApp {
         print "Competências (vírgula): "; List<String> comps = sc.nextLine().split(",")*.trim()
         print "Senha: ";        String senha  = sc.nextLine()
         def cand = new Candidato(nome, sobren, dn, email, cpf, idade, "Brasil", estado, cep, desc, comps, senha)
-        candidatoService.cadastrar(cand)
+        facade.cadastrarCandidato(cand)
         println "Candidato cadastrado."
     }
 
@@ -136,12 +124,12 @@ class LinketinderApp {
         print "Competências esperadas (vírgula): "; List<String> comps = sc.nextLine().split(",")*.trim()
         print "Senha: "; String senha = sc.nextLine()
         def emp = new Empresa(nome, email, cnpj, pais, estado, cep, desc, senha, comps)
-        empresaService.cadastrar(emp)
+        facade.cadastrarEmpresa(emp)
         println "Empresa cadastrada."
     }
 
     private void cadastrarVaga(Scanner sc) {
-        def empresas = empresaService.listarTodas()
+        def empresas = facade.listarEmpresas()
         if (empresas.isEmpty()) { println "Nenhuma empresa cadastrada."; return }
         println "\nCadastro de Vaga"
         print "Título: "; String titulo = sc.nextLine()
@@ -152,13 +140,13 @@ class LinketinderApp {
         print "Local: "; String local = sc.nextLine()
         print "Competências (vírgula): "; List<String> comps = sc.nextLine().split(",")*.trim()
         def vaga = new Vaga(null, titulo, emp, comps, local)
-        vagaService.cadastrar(vaga)
+        facade.cadastrarVaga(vaga)
         println "Vaga cadastrada."
     }
 
     private void candidatoCurteVaga(Scanner sc) {
-        def candidatos = candidatoService.listarTodos()
-        def vagas = vagaService.listarTodas()
+        def candidatos = facade.listarCandidatos()
+        def vagas = facade.listarVagas()
         if (candidatos.isEmpty() || vagas.isEmpty()) { println "Sem dados."; return }
         println "Escolha candidato:"
         candidatos.eachWithIndex { c,i -> println "[$i] ${c.nome}" }
@@ -166,17 +154,17 @@ class LinketinderApp {
         println "Escolha vaga:"
         vagas.eachWithIndex { v,i -> println "[$i] ${v.titulo}" }
         def vaga = vagas[sc.nextLine().toInteger()]
-        curtidaService.curtirPorCandidato(cand, vaga)
+        facade.curtirPorCandidato(cand, vaga)
     }
 
     private void empresaCurteCandidato(Scanner sc) {
-        def empresas = empresaService.listarTodas()
-        def candidatos = candidatoService.listarTodos()
+        def empresas = facade.listarEmpresas()
+        def candidatos = facade.listarCandidatos()
         if (empresas.isEmpty() || candidatos.isEmpty()) { println "Sem dados."; return }
         println "Escolha empresa:"
         empresas.eachWithIndex { e,i -> println "[$i] ${e.nome}" }
         def emp = empresas[sc.nextLine().toInteger()]
-        def vagasEmp = vagaService.listarPorEmpresa(emp.id)
+        def vagasEmp = facade.listarVagas().findAll { it.empresa?.id == emp.id }
         if (vagasEmp.isEmpty()) { println "Empresa sem vagas."; return }
         println "Escolha vaga:"
         vagasEmp.eachWithIndex { v,i -> println "[$i] ${v.titulo}" }
@@ -184,47 +172,48 @@ class LinketinderApp {
         println "Escolha candidato:"
         candidatos.eachWithIndex { c,i -> println "[$i] ${c.nome}" }
         def cand = candidatos[sc.nextLine().toInteger()]
-        curtidaService.curtirPorEmpresa(cand, vaga)
+        facade.curtirPorEmpresa(cand, vaga)
     }
 
     private void excluirCompetencia(Scanner sc) {
         print "Nome da competência: "
-        competenciaService.excluir(sc.nextLine())
+        facade.excluirCompetencia(sc.nextLine())
         println "Competência excluída."
     }
 
     private void atualizarCompetencia(Scanner sc) {
         print "Nome atual: "; String atual = sc.nextLine()
         print "Novo nome: ";  String novo  = sc.nextLine()
-        competenciaService.atualizar(atual, novo)
+        facade.atualizarCompetencia(atual, novo)
         println "Competência atualizada."
     }
 
     private void excluirCandidato(Scanner sc) {
         listarCandidatos()
         print "ID candidato: "
-        candidatoService.excluir(sc.nextLine().toInteger())
+        facade.excluirCandidato(sc.nextLine().toInteger())
         println "Candidato excluído."
     }
 
     private void excluirEmpresa(Scanner sc) {
         listarEmpresas()
         print "ID empresa: "
-        empresaService.excluir(sc.nextLine().toInteger())
+        facade.excluirEmpresa(sc.nextLine().toInteger())
         println "Empresa excluída."
     }
 
     private void excluirVaga(Scanner sc) {
         listarVagas()
         print "ID vaga: "
-        vagaService.excluir(sc.nextLine().toInteger())
+        facade.excluirVaga(sc.nextLine().toInteger())
         println "Vaga excluída."
     }
 
     private void atualizarCandidato(Scanner sc) {
+        def candidatos = facade.listarCandidatos()
         listarCandidatos()
         print "ID candidato: "
-        def cand = candidatoService.buscarPorId(sc.nextLine().toInteger())
+        def cand = candidatesFindById(candidatos, sc.nextLine().toInteger())
         if (!cand) { println "Não encontrado."; return }
         print "Novo nome (${cand.nome}): "; cand.nome = sc.nextLine()
         print "Novo sobrenome (${cand.sobrenome}): "; cand.sobrenome = sc.nextLine()
@@ -235,14 +224,15 @@ class LinketinderApp {
         print "Novo CEP (${cand.cep}): "; cand.cep = sc.nextLine()
         print "Nova descrição: "; cand.descricao = sc.nextLine()
         print "Nova senha: "; cand.senha = sc.nextLine()
-        candidatoService.atualizar(cand)
+        facade.atualizarCandidato(cand)
         println "Candidato atualizado."
     }
 
     private void atualizarEmpresa(Scanner sc) {
+        def empresas = facade.listarEmpresas()
         listarEmpresas()
         print "ID empresa: "
-        def emp = empresaService.buscarPorId(sc.nextLine().toInteger())
+        def emp = companiesFindById(empresas, sc.nextLine().toInteger())
         if (!emp) { println "Não encontrada."; return }
         print "Novo nome (${emp.nome}): "; emp.nome = sc.nextLine()
         print "Novo email (${emp.email}): "; emp.email = sc.nextLine()
@@ -252,19 +242,25 @@ class LinketinderApp {
         print "Novo CEP (${emp.cep}): "; emp.cep = sc.nextLine()
         print "Nova descrição: "; emp.descricao = sc.nextLine()
         print "Nova senha: "; emp.senha = sc.nextLine()
-        empresaService.atualizar(emp)
+        facade.atualizarEmpresa(emp)
         println "Empresa atualizada."
     }
 
     private void atualizarVaga(Scanner sc) {
+        def vagas = facade.listarVagas()
         listarVagas()
         print "ID vaga: "
-        def vaga = vagaService.buscarPorId(sc.nextLine().toInteger())
+        def vaga = vagasFindById(vagas, sc.nextLine().toInteger())
         if (!vaga) { println "Não encontrada."; return }
         print "Novo título (${vaga.titulo}): "; vaga.titulo = sc.nextLine()
         print "Novo local (${vaga.local}): "; vaga.local = sc.nextLine()
         print "Competências (vírgula): "; vaga.competenciasRequeridas = sc.nextLine().split(",")*.trim()
-        vagaService.atualizar(vaga)
+        facade.atualizarVaga(vaga)
         println "Vaga atualizada."
     }
+
+
+    private Candidato candidatesFindById(List<Candidato> list, int id) { list.find { it.id == id } }
+    private Empresa   companiesFindById(List<Empresa> list, int id)    { list.find { it.id == id } }
+    private Vaga      vagasFindById(List<Vaga> list, int id)           { list.find { it.id == id } }
 }

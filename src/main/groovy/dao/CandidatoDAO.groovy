@@ -99,7 +99,6 @@ class CandidatoDAO implements ICandidatoDAO {
         stmt3.close()
     }
 
-    // 🧱 métodos auxiliares agora são privados e de instância
 
     private Candidato construirCandidato(ResultSet rs) {
         LocalDate dataNascimento = rs.getDate("data_nascimento").toLocalDate()

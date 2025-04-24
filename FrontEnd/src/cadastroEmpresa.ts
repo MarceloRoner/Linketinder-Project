@@ -27,7 +27,6 @@ window.addEventListener('DOMContentLoaded', () => {
       ? compsStr.split(',').map(c => c.trim())
       : [];
 
-     // Validações
      if (!validarNome(nome)) {
       alert("Nome da empresa inválido! (mínimo 3 letras)");
       return;

@@ -33,10 +33,8 @@ window.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
-    // Lê as vagas existentes
     const vagas = getVagas();
-    // Gera ID
-    const newId = vagas.length > 0 
+    const newId = vagas.length > 0
       ? vagas[vagas.length - 1].id + 1 
       : 1;
 

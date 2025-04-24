@@ -23,22 +23,18 @@ window.addEventListener('DOMContentLoaded', () => {
       alert("Nome inválido! (mínimo 3 letras, sem caracteres estranhos)");
       return;
     }
-    // E-mail
     if (!validarEmail(email)) {
       alert("E-mail inválido!");
       return;
     }
-    // CPF
     if (cpf && !validarCPF(cpf)) {
       alert("CPF inválido! Use 11 dígitos (ex.: 12345678901)");
       return;
     }
-    // CEP
     if (cep && !validarCEP(cep)) {
       alert("CEP inválido! Use 99999-999 ou 99999999");
       return;
     }
-    // Competências
     if (!validarCompetencias(competencias)) {
       alert("Competências inválidas! Use somente letras, números e espaços.");
       return;

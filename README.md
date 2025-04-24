@@ -1,6 +1,7 @@
 # 🏆 Linketinder Project
 
-Projeto desenvolvido em **Groovy** para o **ZG-HERO (K1-T4)**. Trata-se de um **MVP para simular um sistema de recrutamento estilo "LinkedIn + Tinder."**
+Projeto desenvolvido em **Groovy** para o **ZG-HERO (K1-T4)**.  
+É um **MVP** que simula um sistema de recrutamento estilo **LinkedIn + Tinder**.
 
 ![GitHub repo size](https://img.shields.io/github/repo-size/MarceloRoner/Linketinder-Project)
 ![GitHub last commit](https://img.shields.io/github/last-commit/MarceloRoner/Linketinder-Project)
@@ -9,118 +10,112 @@ Projeto desenvolvido em **Groovy** para o **ZG-HERO (K1-T4)**. Trata-se de um **
 
 ## 🚀 Como Executar
 
-1. Certifique-se de ter o [Groovy](https://groovy-lang.org/) instalado.
-2. Clone este repositório:
+1. Tenha [Java 17+](https://adoptium.net/) e [Groovy 4+](https://groovy-lang.org/) instalados.  
+2. Clone o repositório:
+
    ```bash
    git clone https://github.com/MarceloRoner/Linketinder-Project.git
+   cd Linketinder-Project
    ```
-3. Dentro da pasta do projeto, vá até `src/main/groovy` e execute:
+
+3. Execute a aplicação (Gradle wrapper incluso):
 
    ```bash
-   groovy Main.groovy
+   ./gradlew run         # ou gradle run
    ```
 
-> Siga as instruções no terminal para cadastrar ou visualizar candidatos, empresas, vagas e matches.
+No terminal você poderá cadastrar ou visualizar candidatos, empresas, vagas e matches.
 
 ---
 
-## 🔧 Arquitetura Baseada em Camadas
+## 🔧 Arquitetura em Camadas
 
-O sistema foi refatorado para seguir boas práticas de projeto, com separação clara de responsabilidades.
+| Camada / pacote | Descrição |
+|------------------|-----------|
+| `app`           | CLI (`LinketinderApp`) – interação com o usuário |
+| `facade`        | `LinketinderFacade` – porta de entrada única para a UI |
+| `context`       | `AppContext` – constrói DAOs, Services e a Facade |
+| `service`       | Regras de negócio (candidato, empresa, vaga, curtida) |
+| `dao`           | Persistência JDBC (PostgreSQL) via interfaces DAO |
+| `domain`        | Entidades ricas (`Candidato`, `Empresa`, `Vaga`, etc.) |
+| `utils`         | Infraestruturas (ex.: `ConnectionFactory`) |
 
-### ✨ Princípios Aplicados (SOLID & Clean Code)
-- **SRP** – Cada classe tem uma única responsabilidade
-- **OCP** – Código aberto para extensão, fechado para modificação
-- **LSP** – Substituição de implementações via interfaces DAO
-- **ISP** – Interfaces específicas por entidade
-- **DIP** – `AppContext` injeta dependências para os serviços e DAOs
+---
+
+## ✨ Princípios Aplicados (SOLID & Clean Code)
+
+- **SRP** – cada classe possui responsabilidade única  
+- **OCP** – novas features via extensão (ex.: novo DAO)  
+- **LSP / ISP** – implementações substituem as interfaces DAO sem quebrar contrato  
+- **DIP** – UI depende da Facade; Services dependem de interfaces DAO  
+
+---
+
+## 🏗️ Design Patterns implementados
+
+| Padrão        | Onde / por que |
+|---------------|----------------|
+| **Factory + Singleton** | `utils.ConnectionFactory` cria e reutiliza uma única `Connection`, removendo duplicação de código e melhorando performance |
+| **Facade**     | `facade.LinketinderFacade` oferece métodos de alto nível como `listarCandidatos()` ou `cadastrarVaga()`, desacoplando a UI da lógica interna |
 
 ---
 
 ## 🧱 Estrutura de Pastas
 
 ```
-src/
-├── main/
-│   ├── app/           # CLI (LinketinderApp) como orquestrador da aplicação
-│   ├── context/       # AppContext com injeção manual de dependências
-│   ├── dao/           # Interfaces e implementações JDBC (PostgreSQL)
-│   ├── domain/        # Entidades: Candidato, Empresa, Vaga, Curtida
-│   ├── service/       # Regras de negócio por entidade
-│   └── Main.groovy    # Bootstrap da aplicação
-│
-├── test/
-│   └── service/       # Testes unitários com Spock
+src
+├── main
+│   ├── app/            LinketinderApp (CLI)
+│   ├── context/        AppContext (injeção manual)
+│   ├── facade/         LinketinderFacade
+│   ├── dao/            JDBC DAOs + interfaces
+│   ├── domain/         Entidades
+│   ├── service/        Camada de negócio
+│   └── Main.groovy     Bootstrap
+└── test
+    └── service/        Testes unitários (Spock)
 ```
 
 ---
 
-## 🧪 Testes Automatizados com Spock
-
-- Testes unitários para cada service (`src/test/groovy/service/`)
-- Mock de DAOs via Spock
-- Testes de integração com banco de dados real
-
-### Rodando os testes:
+## 🧪 Testes Automatizados (Spock)
 
 ```bash
-gradle test
+./gradlew test
+open build/reports/tests/test/index.html
 ```
 
-Relatório em: `build/reports/tests/test/index.html`
+- Stubs de DAO → testes rápidos e isolados  
+- Cobrem serviços, curtidas e regras de negócio  
 
 ---
 
-## 🛢️ Integração com PostgreSQL
+## 🛢️ Banco de Dados PostgreSQL
 
-- Script `linketinder_project.sql` para criação do schema
-- Relacionamentos N:N via tabelas pivot
-- CRUD completo com JDBC
-- DAO com interface e implementação desacopladas
-- `AppContext` gerencia instâncias dos DAOs e Services
-
-### Configuração do banco:
-
-1. Crie o banco `linketinder`
-2. Rode o script SQL
-3. Atualize os dados de conexão no DAO se necessário
+- Crie o banco `linketinder`  
+- Importe o `linketinder_schema.sql` (na raiz)  
+- Ajuste URL/usuário/senha em `utils/ConnectionFactory.groovy` se necessário  
 
 ---
 
 ## ❤️ Sistema de Curtidas e Match
 
-- Candidatos podem curtir empresas, e vice-versa
-- Quando o match é mútuo, o sistema exibe automaticamente
-- Registros de curtidas e matches persistidos no banco
-- Regra de negócio centralizada em `CurtidaService`
-
----
-
-## 🌐 Frontend Simples (TypeScript)
-
-- Protótipo de frontend com validações
-- Simulação de cadastro, listagem e login no `localStorage`
-
-```bash
-cd frontend/
-npm install
-npm run build
-npm start
-```
+- Candidatos podem curtir vagas  
+- Empresas podem curtir candidatos  
+- Quando ambos curtirem → a aplicação exibe **MATCH!**  
+- Lógica centralizada no `CurtidaService`  
 
 ---
 
 ## ✅ Destaques da Refatoração
 
-- ✅ Separação entre camadas de domínio, DAO, service e aplicação
-- ✅ Inversão de dependências com `AppContext`
-- ✅ DAOs desacoplados com interfaces
-- ✅ Testes unitários e de integração com Spock
-- ✅ Bootstrap via `Main.groovy` com inicialização clara
-- ✅ CLI modular via `LinketinderApp.groovy`
-- ✅ README atualizado e documentado
+- Conexão única com **Factory + Singleton**
+- UI desacoplada via **Facade**
+- Inversão de dependências no `AppContext`
+- DAOs 100% orientados a **interfaces**
+- Testes Spock verdes (`./gradlew test`)
+- Código limpo e documentado
 
 ---
 
-**Feito com Groovy, PostgreSQL e Clean Code por Marcelo Roner.**  
-**Powered by ZG Soluções | Acelera ZG** 💥
+Desenvolvido por **Marcelo Roner** – Groovy, PostgreSQL & Clean Code

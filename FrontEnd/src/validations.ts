@@ -14,26 +14,26 @@ export function validarEmail(email:string) : boolean {
 
 export function validarCPF(cpf: string): boolean {
     if (!cpf) return true;  
-    const regex = /^(\d{3}\.){2}\d{3}-\d{2}|\d{11}$/; // Agora aceita CPFs formatados e não formatados
+    const regex = /^(\d{3}\.){2}\d{3}-\d{2}|\d{11}$/;
     return regex.test(cpf.trim());
   }
     
   export function validarCNPJ(cnpj: string): boolean {
-    if (!cnpj) return true; // Idem
-    const regex = /^\d{2}(\.\d{3}){2}\/\d{4}-\d{2}|\d{14}$/; // Agora aceita CNPJs formatados e não formatados
+    if (!cnpj) return true;
+    const regex = /^\d{2}(\.\d{3}){2}\/\d{4}-\d{2}|\d{14}$/;
     return regex.test(cnpj.trim());
   }
 
   export function validarCEP(cep: string): boolean {
     if (!cep) return true;
     const regex = /^\d{5}-?\d{3}$/;
-    return regex.test(cep.trim().replace(/\s/g, '')); // Removendo espaços internos
+    return regex.test(cep.trim().replace(/\s/g, ''));
   }
 
   export function validarCompetencias(comps: string[]): boolean {
     const regex = /^[A-Za-z0-9À-ÖØ-öø-ÿ\s]+$/;
   
-    if (!comps || comps.length === 0) return false; // Agora exige pelo menos 1 válida
+    if (!comps || comps.length === 0) return false;
   
     return comps.every((item) => {
         const trimmedItem = item.trim();
