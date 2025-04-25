@@ -1,4 +1,4 @@
-package domain
+package model
 
 import spock.lang.Specification
 import java.time.LocalDate

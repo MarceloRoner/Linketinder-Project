@@ -1,7 +1,7 @@
 package service
 
 import spock.lang.Specification
-import domain.Candidato
+import model.Candidato
 import dao.ICandidatoDAO
 import java.time.LocalDate
 

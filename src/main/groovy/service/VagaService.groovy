@@ -1,7 +1,7 @@
 package service
 
 import dao.IVagaDAO
-import domain.Vaga
+import model.Vaga
 
 class VagaService {
 

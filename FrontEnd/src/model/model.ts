@@ -1,13 +1,17 @@
 export interface Candidato {
   id: number;
   nome: string;
+  sobrenome: string;
   email: string;
   cpf: string;
   idade: number;
+  pais: string;
   estado: string;
   cep: string;
   descricao: string;
+  dataNascimento: string;
   competencias: string[];
+  senha: string;
 }
 
 export interface Empresa {
@@ -20,11 +24,13 @@ export interface Empresa {
   cep: string;
   descricao: string;
   competenciasEsperadas: string[];
+  senha: string;
 }
 
 export interface Vaga {
   id: number;
   titulo: string;
-  empresaId: number;
+  empresa: Empresa;
+  local: string;
   competenciasRequeridas: string[];
 }

@@ -1,39 +1,50 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Cadastro de Vaga</title>
   <link rel="stylesheet" href="../css/style.css" />
 </head>
 <body>
-  <nav>
-    <a href="cadastro-candidato.html">Cadastrar Candidato</a> |
-    <a href="cadastro-empresa.html">Cadastrar Empresa</a> |
-    <a href="cadastro-vaga.html">Cadastrar Vaga</a> |
-    <a href="perfil-candidato.html">Perfil do Candidato</a> |
-    <a href="perfil-empresa.html">Perfil da Empresa</a>
-  </nav>
+<nav>
+  <a href="cadastro-candidato.html">Candidato</a> |
+  <a href="cadastro-empresa.html">Empresa</a> |
+  <a href="cadastro-vaga.html">Vaga</a> |
+  <a href="perfil-candidato.html">Perfil Candidato</a> |
+  <a href="perfil-empresa.html">Perfil Empresa</a>
+</nav>
 
-  <h1>Cadastro de Vaga</h1>
-  <form id="form-vaga">
-    <label>Título da Vaga:
-      <input type="text" id="titulo" required />
-    </label>
-    <br>
+<h1>Cadastro de Vaga</h1>
 
-    <label>ID da Empresa (dona da vaga):
-      <input type="number" id="empresaId" required />
-    </label>
-    <br>
+<form id="form-vaga">
+  <label>Título:
+    <input name="titulo" type="text" required />
+  </label><br>
 
-    <label>Competências Requeridas (separadas por vírgula):
-      <input type="text" id="competencias" />
-    </label>
-    <br>
+  <label>Empresa:
+    <select name="empresa"></select>
+  </label><br>
 
-    <button type="submit">Cadastrar Vaga</button>
-  </form>
+  <label>Local:
+    <input name="local" type="text" />
+  </label><br>
 
-  <script type="module" src="../dist/cadastroVagas.js"></script>
+  <label>Competências requeridas (vírgula):
+    <input name="competencias" type="text" />
+  </label><br>
+
+  <button type="submit">Cadastrar Vaga</button>
+</form>
+
+<script type="module">
+  import { conectarFormVaga } from "/src/controller/cadastroVagas.ts";
+  import { popularSelectEmpresas } from "/src/controller/cadastroVagas.ts";
+
+  const form = document.getElementById("form-vaga") as HTMLFormElement;
+  const sel  = form.querySelector("select[name=empresa]") as HTMLSelectElement;
+  /* popular empresas ao abrir página */
+  popularSelectEmpresas(sel);
+  conectarFormVaga(form);
+</script>
 </body>
 </html>

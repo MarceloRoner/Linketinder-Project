@@ -1,11 +1,17 @@
 package boot
 
-import utils.ConnectionFactory;
 import context.AppContext
-import app.LinketinderApp
+import view.LinketinderView
+import utils.ConnectionFactory
 
-def ctx = new AppContext()
-def app = new LinketinderApp(ctx.facade)
-app.iniciar()
+def ctx  = new AppContext()
+def view = new LinketinderView(
+        ctx.facade,
+        ctx.candidatoCtl,
+        ctx.empresaCtl,
+        ctx.vagaCtl)
+
+view.iniciar()
+
 ctx.closeConnection()
-utils.ConnectionFactory.instance.close()
+ConnectionFactory.getInstance().close()

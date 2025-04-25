@@ -1,7 +1,9 @@
-package facade
+package service
 
-import service.*
-import domain.*
+import model.Candidato
+import model.Curtida
+import model.Empresa
+import model.Vaga
 
 class LinketinderFacade {
 

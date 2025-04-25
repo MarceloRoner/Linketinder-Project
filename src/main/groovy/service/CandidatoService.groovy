@@ -1,7 +1,7 @@
 package service
 
 import dao.ICandidatoDAO
-import domain.Candidato
+import model.Candidato
 
 class CandidatoService {
 

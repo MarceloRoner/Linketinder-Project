@@ -1,6 +1,6 @@
 package dao
 
-import domain.Empresa
+import model.Empresa
 
 interface IEmpresaDAO {
     List<Empresa> listarEmpresas()

@@ -3,7 +3,7 @@
     "target": "ES6",               // ou "ES2017", "ES2020", etc.
     "module": "ESNext",            // ou "commonjs", a depender do projeto
     "moduleResolution": "node",
-    "lib": ["ES2017", "DOM"],      // para usar Object.values e APIs do browser
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],      // para usar Object.values e APIs do browser
     "rootDir": "./src",            // onde ficam seus arquivos .ts
     "outDir": "./dist",            // para onde vão os arquivos .js compilados
     "strict": true,

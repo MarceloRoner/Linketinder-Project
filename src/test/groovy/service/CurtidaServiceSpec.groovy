@@ -1,9 +1,9 @@
 package service
 
 import spock.lang.Specification
-import domain.Candidato
-import domain.Empresa
-import domain.Vaga
+import model.Candidato
+import model.Empresa
+import model.Vaga
 import java.time.LocalDate
 
 class CurtidaServiceSpec extends Specification {

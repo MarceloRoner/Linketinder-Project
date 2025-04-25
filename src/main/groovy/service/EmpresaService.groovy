@@ -1,7 +1,7 @@
 package service
 
 import dao.IEmpresaDAO
-import domain.Empresa
+import model.Empresa
 
 class EmpresaService {
 

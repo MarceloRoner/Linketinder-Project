@@ -2,7 +2,7 @@ package context
 
 import dao.*
 import service.*
-import facade.LinketinderFacade
+import controller.*
 import utils.ConnectionFactory
 
 import java.sql.Connection
@@ -24,6 +24,10 @@ class AppContext {
 
     final LinketinderFacade  facade
 
+    final CandidatoController candidatoCtl
+    final EmpresaController   empresaCtl
+    final VagaController      vagaCtl
+
     AppContext() {
         conn = ConnectionFactory.getInstance().getConnection()
 
@@ -39,12 +43,13 @@ class AppContext {
         curtidaService     = new CurtidaService()
 
         facade = new LinketinderFacade(
-                candidatoService,
-                empresaService,
-                vagaService,
-                competenciaService,
-                curtidaService
-        )
+                candidatoService, empresaService,
+                vagaService,      competenciaService,
+                curtidaService)
+
+        candidatoCtl = new CandidatoController(facade)
+        empresaCtl   = new EmpresaController(facade)
+        vagaCtl      = new VagaController(facade)
     }
 
     void closeConnection() {

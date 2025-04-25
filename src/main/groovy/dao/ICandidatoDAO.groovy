@@ -1,6 +1,6 @@
 package dao
 
-import domain.Candidato
+import model.Candidato
 
 interface ICandidatoDAO {
     List<Candidato> listarCandidatos()

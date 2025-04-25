@@ -1,65 +1,64 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Cadastro de Empresa</title>
   <link rel="stylesheet" href="../css/style.css" />
 </head>
 <body>
-  <nav>
-    <a href="cadastro-candidato.html">Cadastrar Candidato</a> |
-    <a href="cadastro-empresa.html">Cadastrar Empresa</a> |
-    <a href="perfil-candidato.html">Perfil do Candidato</a> |
-    <a href="perfil-empresa.html">Perfil da Empresa</a>
-    <a href="cadastro-vaga.html">Cadastrar Vaga</a> |
+<nav>
+  <a href="cadastro-candidato.html">Candidato</a> |
+  <a href="cadastro-empresa.html">Empresa</a> |
+  <a href="cadastro-vaga.html">Vaga</a> |
+  <a href="perfil-candidato.html">Perfil Candidato</a> |
+  <a href="perfil-empresa.html">Perfil Empresa</a>
+</nav>
 
-  </nav>
+<h1>Cadastro de Empresa</h1>
 
-  <h1>Cadastro de Empresa</h1>
-  <form id="form-empresa">
-    <label>Nome da Empresa:
-      <input type="text" id="nome" required />
-    </label>
-    <br>
-    
-    <label>E-mail:
-      <input type="email" id="email" required />
-    </label>
-    <br>
-    
-    <label>CNPJ:
-      <input type="text" id="cnpj" />
-    </label>
-    <br>
-    
-    <label>País:
-      <input type="text" id="pais" />
-    </label>
-    <br>
-    
-    <label>Estado:
-      <input type="text" id="estado" />
-    </label>
-    <br>
-    
-    <label>CEP:
-      <input type="text" id="cep" />
-    </label>
-    <br>
-    
-    <label>Descrição:
-      <textarea id="descricao"></textarea>
-    </label>
-    <br>
-    
-    <label>Competências Esperadas (separadas por vírgula):
-      <input type="text" id="competenciasEsperadas" />
-    </label>
-    <br>
-    
-    <button type="submit">Cadastrar</button>
-  </form>
-  
-  <script type="module" src="../dist/cadastroEmpresa.js"></script>
+<form id="form-empresa">
+  <label>Nome:
+    <input name="nome"  type="text" required />
+  </label><br>
+
+  <label>E-mail:
+    <input name="email" type="email" required />
+  </label><br>
+
+  <label>CNPJ:
+    <input name="cnpj"  type="text" required />
+  </label><br>
+
+  <label>País:
+    <input name="pais"  type="text" value="Brasil" />
+  </label><br>
+
+  <label>Estado:
+    <input name="estado" type="text" />
+  </label><br>
+
+  <label>CEP:
+    <input name="cep" type="text" />
+  </label><br>
+
+  <label>Descrição:
+    <textarea name="descricao"></textarea>
+  </label><br>
+
+  <label>Competências esperadas (vírgula):
+    <input name="competencias" type="text" />
+  </label><br>
+
+  <label>Senha:
+    <input name="senha" type="password" required />
+  </label><br>
+
+  <button type="submit">Cadastrar</button>
+</form>
+
+<script type="module">
+  import { conectarFormEmpresa } from "/src/controller/cadastroEmpresa.ts";
+  conectarFormEmpresa(document.getElementById("form-empresa"));
+</script>
 </body>
 </html>

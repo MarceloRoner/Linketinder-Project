@@ -1,121 +1,94 @@
 # 🏆 Linketinder Project
 
-Projeto desenvolvido em **Groovy** para o **ZG-HERO (K1-T4)**.  
-É um **MVP** que simula um sistema de recrutamento estilo **LinkedIn + Tinder**.
+Projeto desenvolvido em **Groovy** (back-end) + **TypeScript** (front-end) para o **ZG-HERO**.  
+É um **MVP** que simula um sistema de recrutamento no estilo **LinkedIn + Tinder**.
 
 ![GitHub repo size](https://img.shields.io/github/repo-size/MarceloRoner/Linketinder-Project)
 ![GitHub last commit](https://img.shields.io/github/last-commit/MarceloRoner/Linketinder-Project)
 
 ---
 
-## 🚀 Como Executar
+## 🚀 Como executar
 
-1. Tenha [Java 17+](https://adoptium.net/) e [Groovy 4+](https://groovy-lang.org/) instalados.  
-2. Clone o repositório:
+### Back-end (CLI)
+```bash
+git clone https://github.com/MarceloRoner/Linketinder-Project.git
+cd Linketinder-Project
+./gradlew run               # ou gradle run
+```
 
-   ```bash
-   git clone https://github.com/MarceloRoner/Linketinder-Project.git
-   cd Linketinder-Project
-   ```
+### Front-end (SPA estático)
+```bash
+cd frontend
+npm install
+npm run build               # compila para dist/
+npx serve .                 # servidor estático para testar
+```
 
-3. Execute a aplicação (Gradle wrapper incluso):
+## 🔧 Arquitetura
 
-   ```bash
-   ./gradlew run         # ou gradle run
-   ```
+| Camada / pacote      | Descrição |
+|----------------------|-----------|
+| `view/`              | LinketinderView (CLI – camada View do MVC) |
+| `controller/`        | Orquestram requisições da View → Facade |
+| `facade/`            | API de alto nível para UI (LinketinderFacade) |
+| `service/`           | Regras de negócio (SRP) |
+| `dao/`               | Persistência JDBC (PostgreSQL) |
+| `model/`             | Entidades ricas |
+| `context/AppContext` | Injeta dependências (Factory + DIP) |
+| `utils/ConnectionFactory` | Factory + Singleton da `java.sql.Connection` |
 
-No terminal você poderá cadastrar ou visualizar candidatos, empresas, vagas e matches.
-
----
-
-## 🔧 Arquitetura em Camadas
-
-| Camada / pacote | Descrição |
-|------------------|-----------|
-| `app`           | CLI (`LinketinderApp`) – interação com o usuário |
-| `facade`        | `LinketinderFacade` – porta de entrada única para a UI |
-| `context`       | `AppContext` – constrói DAOs, Services e a Facade |
-| `service`       | Regras de negócio (candidato, empresa, vaga, curtida) |
-| `dao`           | Persistência JDBC (PostgreSQL) via interfaces DAO |
-| `domain`        | Entidades ricas (`Candidato`, `Empresa`, `Vaga`, etc.) |
-| `utils`         | Infraestruturas (ex.: `ConnectionFactory`) |
-
----
-
-## ✨ Princípios Aplicados (SOLID & Clean Code)
-
-- **SRP** – cada classe possui responsabilidade única  
-- **OCP** – novas features via extensão (ex.: novo DAO)  
-- **LSP / ISP** – implementações substituem as interfaces DAO sem quebrar contrato  
-- **DIP** – UI depende da Facade; Services dependem de interfaces DAO  
-
----
-
-## 🏗️ Design Patterns implementados
-
-| Padrão        | Onde / por que |
-|---------------|----------------|
-| **Factory + Singleton** | `utils.ConnectionFactory` cria e reutiliza uma única `Connection`, removendo duplicação de código e melhorando performance |
-| **Facade**     | `facade.LinketinderFacade` oferece métodos de alto nível como `listarCandidatos()` ou `cadastrarVaga()`, desacoplando a UI da lógica interna |
-
----
-
-## 🧱 Estrutura de Pastas
-
+**Front-end (`src`)**
 ```
 src
-├── main
-│   ├── app/            LinketinderApp (CLI)
-│   ├── context/        AppContext (injeção manual)
-│   ├── facade/         LinketinderFacade
-│   ├── dao/            JDBC DAOs + interfaces
-│   ├── domain/         Entidades
-│   ├── service/        Camada de negócio
-│   └── Main.groovy     Bootstrap
-└── test
-    └── service/        Testes unitários (Spock)
+├── model/        # DTO/Tipos
+├── service/      # api.ts, storageService, validations
+├── controller/   # cadastros + binds de eventos
+└── view/         # renders/perfis
 ```
 
----
+## ✨ SOLID & Design Patterns
 
-## 🧪 Testes Automatizados (Spock)
+| Padrão / Princípio | Onde foi aplicado |
+|----------------------|------------------|
+| Factory + Singleton  | `utils.ConnectionFactory` cria uma única conexão JDBC |
+| Facade               | `LinketinderFacade` desacopla View da business-logic |
+| MVC                  | Backend (CLI = View, Controllers, Model/Service/DAO) e Front-end (HTML + TS) |
+| DIP / ISP            | Services dependem de interfaces DAO |
 
+## 🧪 Testes (Spock)
 ```bash
 ./gradlew test
 open build/reports/tests/test/index.html
 ```
+Stubs de DAO garantem testes rápidos e isolados para todos os services.
 
-- Stubs de DAO → testes rápidos e isolados  
-- Cobrem serviços, curtidas e regras de negócio  
+## 📂 Configuração do PostgreSQL
+- Crie o banco `linketinder`
+- Rode o script `linketinder_schema.sql`
+- Ajuste URL/usuário em `utils/ConnectionFactory.groovy` se necessário
 
----
+## 💖 Lógica de Match
+- **Candidato** curte **Vaga** → registro em memória
+- **Empresa** curte **Candidato** → se recíproco ⇒ **MATCH!**
+- Implementado em `CurtidaService`
 
-## 🛢️ Banco de Dados PostgreSQL
+## 🌐 Front-end (MVC + TypeScript)
 
-- Crie o banco `linketinder`  
-- Importe o `linketinder_schema.sql` (na raiz)  
-- Ajuste URL/usuário/senha em `utils/ConnectionFactory.groovy` se necessário  
+| Pasta | Destaque |
+|-------|----------|
+| `service/api.ts`  | CRUD genérico → hoje usa localStorage, pronto para REST |
+| `controller/*`    | coleta dados do formulário, valida e chama api |
+| `view/*`          | renderiza tabelas e gráficos |
+| `css/style.css`   | tema moderno, responsivo, acessibilidade |
 
----
-
-## ❤️ Sistema de Curtidas e Match
-
-- Candidatos podem curtir vagas  
-- Empresas podem curtir candidatos  
-- Quando ambos curtirem → a aplicação exibe **MATCH!**  
-- Lógica centralizada no `CurtidaService`  
-
----
-
-## ✅ Destaques da Refatoração
-
-- Conexão única com **Factory + Singleton**
-- UI desacoplada via **Facade**
-- Inversão de dependências no `AppContext`
-- DAOs 100% orientados a **interfaces**
-- Testes Spock verdes (`./gradlew test`)
-- Código limpo e documentado
+## ✅ Principais ganhos da refatoração
+- Conexão única ao BD (Factory + Singleton)
+- Separação clara MVC em ambos os lados
+- UI (CLI e HTML) livre de SQL/DAO
+- Código de fácil extensão (ex.: trocar JDBC por JPA; trocar localStorage por REST)
+- Testes verdes garantindo regras de negócio
 
 ---
 
-Desenvolvido por **Marcelo Roner** – Groovy, PostgreSQL & Clean Code
+Desenvolvido por Marcelo Roner — Groovy ✦ TypeScript ✦ PostgreSQL ✦ Clean Code

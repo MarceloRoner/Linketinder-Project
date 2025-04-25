@@ -1,9 +1,8 @@
 package dao
 
-import domain.Empresa
-import domain.Vaga
+import model.Empresa
+import model.Vaga
 import java.sql.*
-import java.util.stream.Collectors
 
 class VagaDAO implements IVagaDAO {
 

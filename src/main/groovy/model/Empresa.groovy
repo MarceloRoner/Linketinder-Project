@@ -1,4 +1,4 @@
-package domain
+package model
 
 class Empresa implements Pessoa {
     Integer id

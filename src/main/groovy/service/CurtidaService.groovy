@@ -1,8 +1,8 @@
 package service
 
-import domain.Candidato
-import domain.Vaga
-import domain.Curtida
+import model.Candidato
+import model.Vaga
+import model.Curtida
 
 class CurtidaService {
 

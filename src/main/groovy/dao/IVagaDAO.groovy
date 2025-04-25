@@ -1,6 +1,6 @@
 package dao
 
-import domain.Vaga
+import model.Vaga
 
 interface IVagaDAO {
     List<Vaga> listarVagas()

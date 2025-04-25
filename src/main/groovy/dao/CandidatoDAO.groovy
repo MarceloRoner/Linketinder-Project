@@ -1,6 +1,6 @@
 package dao
 
-import domain.Candidato
+import model.Candidato
 import java.sql.*
 import java.time.LocalDate
 import java.time.Period

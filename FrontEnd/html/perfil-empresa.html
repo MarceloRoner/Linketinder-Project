@@ -3,35 +3,21 @@
 <head>
   <meta charset="UTF-8" />
   <title>Perfil da Empresa</title>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <link rel="stylesheet" href="../css/style.css" />
 </head>
 <body>
-  <nav>
-    <a href="cadastro-candidato.html">Cadastrar Candidato</a> |
-    <a href="cadastro-empresa.html">Cadastrar Empresa</a> |
-    <a href="perfil-candidato.html">Perfil do Candidato</a> |
-    <a href="perfil-empresa.html">Perfil da Empresa</a>
-    <a href="cadastro-vaga.html">Cadastrar Vaga</a> |
+<nav>
+  <a href="cadastro-candidato.html">Candidato</a> |
+  <a href="cadastro-empresa.html">Empresa</a> |
+  <a href="cadastro-vaga.html">Vaga</a> |
+  <a href="perfil-candidato.html">Perfil Candidato</a> |
+  <a href="perfil-empresa.html">Perfil Empresa</a>
+</nav>
 
-  </nav>
+<h1>Candidatos cadastrados</h1>
 
-  <h1>Perfil da Empresa</h1>
+<ul id="lista-empresas"></ul>
 
-  <h2>Candidatos</h2>
-  <table id="tabela-candidatos">
-    <thead>
-      <tr>
-        <th>Anônimo</th>
-        <th>Competências</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
-
-  <h2>Gráfico de Competências</h2>
-  <canvas id="grafico" width="400" height="200"></canvas>
-
-  <script type="module" src="../dist/perfilEmpresa.js"></script>
+<script type="module" src="/src/view/perfilEmpresa.ts"></script>
 </body>
 </html>

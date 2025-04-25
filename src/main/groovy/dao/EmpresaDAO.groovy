@@ -1,8 +1,7 @@
 package dao
 
-import domain.Empresa
+import model.Empresa
 import java.sql.*
-import java.util.stream.Collectors
 
 class EmpresaDAO implements IEmpresaDAO {
 

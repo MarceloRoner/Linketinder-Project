@@ -1,7 +1,7 @@
 package service
 
 import spock.lang.Specification
-import domain.Empresa
+import model.Empresa
 import dao.IEmpresaDAO
 
 class EmpresaServiceSpec extends Specification {

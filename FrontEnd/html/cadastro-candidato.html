@@ -1,65 +1,72 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Cadastro de Candidato</title>
   <link rel="stylesheet" href="../css/style.css" />
 </head>
 <body>
-  <nav>
-    <a href="cadastro-candidato.html">Cadastrar Candidato</a> |
-    <a href="cadastro-empresa.html">Cadastrar Empresa</a> |
-    <a href="perfil-candidato.html">Perfil do Candidato</a> |
-    <a href="perfil-empresa.html">Perfil da Empresa</a>
-    <a href="cadastro-vaga.html">Cadastrar Vaga</a> |
+<nav>
+  <a href="cadastro-candidato.html">Candidato</a> |
+  <a href="cadastro-empresa.html">Empresa</a> |
+  <a href="cadastro-vaga.html">Vaga</a> |
+  <a href="perfil-candidato.html">Perfil Candidato</a> |
+  <a href="perfil-empresa.html">Perfil Empresa</a>
+</nav>
 
-  </nav>
-  
-  <h1>Cadastro de Candidato</h1>
-  <form id="form-candidato">
-    <label>Nome:
-      <input type="text" id="nome" required />
-    </label>
-    <br>
-    
-    <label>E-mail:
-      <input type="email" id="email" required />
-    </label>
-    <br>
-    
-    <label>CPF:
-      <input type="text" id="cpf" />
-    </label>
-    <br>
-    
-    <label>Idade:
-      <input type="number" id="idade" />
-    </label>
-    <br>
-    
-    <label>Estado:
-      <input type="text" id="estado" />
-    </label>
-    <br>
-    
-    <label>CEP:
-      <input type="text" id="cep" />
-    </label>
-    <br>
-    
-    <label>Descrição:
-      <textarea id="descricao"></textarea>
-    </label>
-    <br>
-    
-    <label>Competências (separadas por vírgula):
-      <input type="text" id="competencias" />
-    </label>
-    <br>
-    
-    <button type="submit">Cadastrar</button>
-  </form>
+<h1>Cadastro de Candidato</h1>
 
-  <script type="module" src="../dist/cadastroCandidato.js"></script>
+<form id="form-candidato">
+  <label>Nome:
+    <input name="nome"        type="text"  required />
+  </label><br>
+
+  <label>Sobrenome:
+    <input name="sobrenome"   type="text"  required />
+  </label><br>
+
+  <label>Data de nascimento:
+    <input name="dataNascimento" type="date" required />
+  </label><br>
+
+  <label>E-mail:
+    <input name="email"       type="email" required />
+  </label><br>
+
+  <label>CPF:
+    <input name="cpf"         type="text"  required />
+  </label><br>
+
+  <label>Idade:
+    <input name="idade"       type="number" min="0" required />
+  </label><br>
+
+  <label>Estado:
+    <input name="estado"      type="text" />
+  </label><br>
+
+  <label>CEP:
+    <input name="cep"         type="text" />
+  </label><br>
+
+  <label>Descrição:
+    <textarea name="descricao"></textarea>
+  </label><br>
+
+  <label>Competências (vírgula):
+    <input name="competencias" type="text" />
+  </label><br>
+
+  <label>Senha:
+    <input name="senha"       type="password" required />
+  </label><br>
+
+  <button type="submit">Cadastrar</button>
+</form>
+
+<script type="module">
+  import { conectarFormCandidato } from "/src/controller/cadastroCandidato.ts";
+  conectarFormCandidato(document.getElementById("form-candidato"));
+</script>
 </body>
 </html>

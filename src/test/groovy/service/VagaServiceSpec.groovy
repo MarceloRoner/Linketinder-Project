@@ -1,8 +1,8 @@
 package service
 
 import spock.lang.Specification
-import domain.Empresa
-import domain.Vaga
+import model.Empresa
+import model.Vaga
 import dao.IVagaDAO
 
 class VagaServiceSpec extends Specification {

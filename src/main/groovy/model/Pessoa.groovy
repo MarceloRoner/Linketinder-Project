@@ -1,4 +1,4 @@
-package domain
+package model
 
 interface Pessoa {
     String getNome()
