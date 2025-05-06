@@ -1,4 +1,4 @@
-import { api } from "../service/api";
+import { api } from "../service/api.js";
 import {
   emailValido,
   cnpjValido,
@@ -6,7 +6,7 @@ import {
   cepValido,
   listaNaoVazia,
 } from "../service/validations";
-import { Empresa } from "../model/model";
+import type {Empresa} from "../model/model";
 
 export function conectarFormEmpresa(form: HTMLFormElement) {
   form.addEventListener("submit", (event) => {

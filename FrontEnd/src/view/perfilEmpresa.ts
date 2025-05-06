@@ -1,5 +1,5 @@
-import { api } from "../service/api";
-import { Empresa, Vaga } from "../model/model";
+import { api } from "../service/api.js";
+import type {Empresa, Vaga} from "../model/model.js";
 
 window.addEventListener("DOMContentLoaded", () => {
   const empresas = api.listar<Empresa>("empresas");

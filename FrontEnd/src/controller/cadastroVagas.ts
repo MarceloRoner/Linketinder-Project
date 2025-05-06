@@ -1,6 +1,6 @@
-import { api } from "../service/api";
-import { listaNaoVazia, campoPreenchido } from "../service/validations";
-import { Empresa, Vaga } from "../model/model";
+import { api } from "../service/api.js";
+import { listaNaoVazia, campoPreenchido } from "../service/validations.js";
+import type {Empresa, Vaga} from "../model/model.js";
 
 export function popularSelectEmpresas(select: HTMLSelectElement) {
   const empresas = api.listar<Empresa>("empresas");

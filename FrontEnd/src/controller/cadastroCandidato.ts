@@ -1,6 +1,6 @@
-import { api } from "../service/api";
-import { formCandidatoOk, cpfValido, emailValido } from "../service/validations";
-import { Candidato } from "../model/model";
+import { api } from "../service/api.js";
+import { formCandidatoOk, cpfValido, emailValido } from "../service/validations.js";
+import type {Candidato} from "../model/model";
 
 export function conectarFormCandidato(form: HTMLFormElement) {
   form.addEventListener("submit", (ev) => {

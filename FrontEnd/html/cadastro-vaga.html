@@ -37,12 +37,10 @@
 </form>
 
 <script type="module">
-  import { conectarFormVaga } from "/src/controller/cadastroVagas.ts";
-  import { popularSelectEmpresas } from "/src/controller/cadastroVagas.ts";
-
-  const form = document.getElementById("form-vaga") as HTMLFormElement;
-  const sel  = form.querySelector("select[name=empresa]") as HTMLSelectElement;
-  /* popular empresas ao abrir página */
+  import { conectarFormVaga } from "../dist/controller/cadastroVagas.js";
+  import { popularSelectEmpresas } from "../dist/controller/cadastroVagas.js";
+  const form = document.getElementById("form-vaga");
+  const sel  = form.querySelector("select[name=empresa]");
   popularSelectEmpresas(sel);
   conectarFormVaga(form);
 </script>

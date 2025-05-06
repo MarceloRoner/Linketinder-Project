@@ -1,22 +1,31 @@
 {
   "compilerOptions": {
-    "target": "ES6",               // ou "ES2017", "ES2020", etc.
-    "module": "ESNext",            // ou "commonjs", a depender do projeto
-    "moduleResolution": "node",
-    "lib": ["ES2020", "DOM", "DOM.Iterable"],      // para usar Object.values e APIs do browser
-    "rootDir": "./src",            // onde ficam seus arquivos .ts
-    "outDir": "./dist",            // para onde vão os arquivos .js compilados
+    /* ► Saída (JS) */
+    "target": "ES2020",
+    "module": "ESNext",          // gera ES-modules nativos
+
+    /* ► Resolução que aceita import “…/arquivo.js” vindo de .ts */
+    "moduleResolution": "bundler", // mantém extensão .js nos imports
+    "verbatimModuleSyntax": true,  // não altera a string do import
+
+    /* ► Ambiente */
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+
+    /* ► Estrutura do projeto */
+    "rootDir": "./src",
+    "outDir":  "./FrontEnd/dist",
+
+    /* ► Regras / verificações */
     "strict": true,
     "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
   },
-  "include": [
-    "src/**/*"
-  ],
+
+  "include": ["src/**/*"],
   "exclude": [
     "node_modules",
-    "dist"
+    "FrontEnd/dist"
   ]
 }
