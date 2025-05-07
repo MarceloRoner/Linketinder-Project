@@ -32,8 +32,7 @@ class JobHandler extends JsonHandler {
         try{
             Vaga v = gson.fromJson(body(ex), Vaga)
 
-            // garante empresa existente
-            def emp = empSvc.listarTodos().find{ it.id==v.empresa.id }
+            def emp = empSvc.listarTodas().find{ it.id == v.empresa.id }
             if(!emp){ send(ex,400,[erro:'empresa inexistente']); return }
             v.empresa = emp
 
